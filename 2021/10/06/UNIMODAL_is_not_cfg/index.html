@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#dc143c">
+<meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,300italic,400,400italic,700,700italic%7CComing+Soon:300,300italic,400,400italic,700,700italic%7CJetBrains+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.oyyko.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":false,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="In this article, we will prove that: the language &#39;UNIMODAL&#39; is not cfg. Also, we will prove that cfg can not be used to compare binary number.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The language UNIMODAL is not context free">
+<meta property="og:url" content="https://blog.oyyko.com/2021/10/06/UNIMODAL_is_not_cfg/index.html">
+<meta property="og:site_name" content="Oyyko&#39;s Blog">
+<meta property="og:description" content="In this article, we will prove that: the language &#39;UNIMODAL&#39; is not cfg. Also, we will prove that cfg can not be used to compare binary number.">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-10-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-11-17T14:05:11.037Z">
+<meta property="article:author" content="Oyyko">
+<meta property="article:tag" content="Computation_Theory">
+<meta property="article:tag" content="Context_Free_Grammar">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.oyyko.com/2021/10/06/UNIMODAL_is_not_cfg/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://blog.oyyko.com/2021/10/06/UNIMODAL_is_not_cfg/","path":"2021/10/06/UNIMODAL_is_not_cfg/","title":"The language UNIMODAL is not context free"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>The language UNIMODAL is not context free | Oyyko's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Oyyko's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">29</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">19</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">39</span></a></li>
+        <li class="menu-item menu-item-word"><a href="/word/" rel="section"><i class="fa fa-pen-nib fa-fw"></i>word</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#proposition-twobinary-bigger"><span class="nav-number">1.</span> <span class="nav-text">proposition two:&quot;BINARY BIGGER&quot;:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#proposition-threeunimodal"><span class="nav-number">2.</span> <span class="nav-text">proposition three:&quot;UNIMODAL&quot;:</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Oyyko"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Oyyko</p>
+  <div class="site-description" itemprop="description">Internet is cool, but you cannot download love.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/oyyko" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oyyko" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://leetcode-cn.com/oyyko" title="Leetcode → https:&#x2F;&#x2F;leetcode-cn.com&#x2F;oyyko" rel="noopener" target="_blank"><i class="fa fa-code fa-fw"></i>Leetcode</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:finalwind42@gmail.com" title="E-Mail → mailto:finalwind42@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://blog.oyyko.com/2021/10/06/UNIMODAL_is_not_cfg/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Oyyko">
+      <meta itemprop="description" content="Internet is cool, but you cannot download love.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Oyyko's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          The language UNIMODAL is not context free
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-10-06 00:00:00" itemprop="dateCreated datePublished" datetime="2021-10-06T00:00:00+08:00">2021-10-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-11-17 22:05:11" itemprop="dateModified" datetime="2021-11-17T22:05:11+08:00">2021-11-17</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Computation-Theory/" itemprop="url" rel="index"><span itemprop="name">Computation_Theory</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>In this article, we will prove that: the language 'UNIMODAL' is not cfg. Also, we will prove that cfg can not be used to compare binary number. <span id="more"></span> ## proposition one:"BINARY EQUAL"： Alphabet：{S,0,1}</p>
+<p>language BINARY_EQUAL：string such as <span class="math inline">\(\{(0|1)^* S (0|1)^*\}\)</span>，AND the binary number before '#' is equal to the the latter one.</p>
+<p>statement： BINARY_EQUAL is not context free grammar</p>
+<p>Prove: Assume that BINARY_EQUAL is cfl(context free language), then use the pump lemma.</p>
+<p>For a string s="xxxx...xxxx#yyyy...yyyy"</p>
+<p><span class="math display">\[
+\exists uvwxy, \text{such that} \ s=uvwxy\ ,\text{and}\ \ \forall i\ge 0, uv^iwx^iy\in \mathbb{BINARY\_EQUAL} 
+\]</span></p>
+<p>We choose a special string: <span class="math inline">\(s=1^k0^kS0^k1^k\)</span>, so when k is large enough, the v and x must be different. Hence, the pumped string is not BINARY_EQUAL. So the proposition is right.</p>
+<h2 id="proposition-twobinary-bigger">proposition two:"BINARY BIGGER":</h2>
+<p>Alphabet：{S,0,1} language BINARY_EQUAL：string such as <span class="math inline">\(\{(0|1)^* S (0|1)^*\}\)</span>，AND the binary number before '#' is <strong>BIGGER</strong> to the the latter one. statement： BINARY_BIGGER is not context free grammar</p>
+<p>Prove: Assume that BINARY_BIGGER is cfl, use the pump lemma for the string <span class="math inline">\(1^k0^{k-1}1S1^k0^k\)</span>.</p>
+<p>If v and x are both in the left number, the pump down it.(pump down means that we choose the <span class="math inline">\(i\)</span> in the pump lemma as 0. a.k.a <span class="math inline">\(i=0\)</span>) then the digits of left num is 2k-2, while the right is 2k, so the right number is bigger than the left.</p>
+<p>If v and x are both in the right number, just choose i as much as you need. Then the right is obvious larger than the left.</p>
+<p>If v and x are in different sides: (1) If v is '1' and x is '1',pump down it. Then two num should be equal (2) If v is '00...1', and x is '11...1' then pump up it and the right num should be larger.</p>
+<p>So, the proposition is true.</p>
+<h2 id="proposition-threeunimodal">proposition three:"UNIMODAL":</h2>
+<p>Alphabet：{S,0,1} language UNIMODAL：string such as <span class="math inline">\(\{(0|1)^* S (0|1)^*(S(0|1)^*)^*\}\)</span>. This string will be considered as an array of binary number. And when and only when the array is UNIMODAL. The string belongs to the language.</p>
+<p>For example: 1 3 5 3 1 is a unimodal array. The form in binary is 1#11#101#11#1. So the string '1#11#101#11#1' is unimodal. statement： UNIMODAL is not context free grammar</p>
+<p>Prove: use pump lemma. s=uvwxy. Let s be '<span class="math inline">\(1^K0^KS1^K0^KS1^K0^KS1^K0^KS1^K0^K\)</span>', Actually, we need <span class="math inline">\(1^K0^KS1^K0^K(S1^K0^K)^k\)</span>. Because every num in this array is equal. It's a UNIMODAL string. And if v and x belongs to one num, then pump down it. We get a decrease then increase, hence a controdiction.</p>
+<p>And if v and x belongs to different num. Then v is '000...', x is '111...',(because we let the k be large enough). Hence,we pump down, we we will get a decrease and then increase and then decrease. Controdiction!</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="Oyyko WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Computation-Theory/" rel="tag"><i class="fa fa-tag"></i> Computation_Theory</a>
+              <a href="/tags/Context-Free-Grammar/" rel="tag"><i class="fa fa-tag"></i> Context_Free_Grammar</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/28/go1/" rel="prev" title="Go Note 1">
+                  <i class="fa fa-chevron-left"></i> Go Note 1
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/11/17/ICS1/" rel="next" title="ICS Note 1">
+                  ICS Note 1 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-code"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Oyyko</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"Oyyko/utteranc-comments","issue_term":"pathname","theme":"github-light"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>
