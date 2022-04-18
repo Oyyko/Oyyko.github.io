@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#dc143c">
+<meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,300italic,400,400italic,700,700italic%7CComing+Soon:300,300italic,400,400italic,700,700italic%7CJetBrains+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.oyyko.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":false,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="std::move 和 std::forward">
+<meta property="og:type" content="article">
+<meta property="og:title" content="move 和 forward">
+<meta property="og:url" content="https://blog.oyyko.com/2022/04/18/chaoshu_std_move/index.html">
+<meta property="og:site_name" content="Oyyko&#39;s Blog">
+<meta property="og:description" content="std::move 和 std::forward">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-04-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-18T02:58:20.207Z">
+<meta property="article:author" content="Oyyko">
+<meta property="article:tag" content="面试">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.oyyko.com/2022/04/18/chaoshu_std_move/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://blog.oyyko.com/2022/04/18/chaoshu_std_move/","path":"2022/04/18/chaoshu_std_move/","title":"move 和 forward"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>move 和 forward | Oyyko's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Oyyko's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">29</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">20</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">64</span></a></li>
+        <li class="menu-item menu-item-word"><a href="/word/" rel="section"><i class="fa fa-pen-nib fa-fw"></i>word</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#c-%E8%AE%B2%E4%B8%80%E8%AE%B2-stdmove-%E5%92%8C-stdforward-effective-modern-c"><span class="nav-number">1.</span> <span class="nav-text">C++: 讲一讲 std::move 和 std::forward （Effective Modern C++）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="nav-number">1.1.</span> <span class="nav-text">前置知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#stdmove"><span class="nav-number">1.2.</span> <span class="nav-text">std::move</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stdforward"><span class="nav-number">2.</span> <span class="nav-text">std::forward</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Oyyko"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Oyyko</p>
+  <div class="site-description" itemprop="description">Internet is cool, but you cannot download love.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/oyyko" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oyyko" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://leetcode-cn.com/oyyko" title="Leetcode → https:&#x2F;&#x2F;leetcode-cn.com&#x2F;oyyko" rel="noopener" target="_blank"><i class="fa fa-code fa-fw"></i>Leetcode</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:finalwind42@gmail.com" title="E-Mail → mailto:finalwind42@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://blog.oyyko.com/2022/04/18/chaoshu_std_move/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Oyyko">
+      <meta itemprop="description" content="Internet is cool, but you cannot download love.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Oyyko's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          move 和 forward
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-04-18 00:00:00 / Modified: 10:58:20" itemprop="dateCreated datePublished" datetime="2022-04-18T00:00:00+08:00">2022-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%A2%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">面试</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>std::move 和 std::forward <span id="more"></span></p>
+<h2 id="c-讲一讲-stdmove-和-stdforward-effective-modern-c">C++: 讲一讲 std::move 和 std::forward （Effective Modern C++）</h2>
+<h3 id="前置知识">前置知识</h3>
+<p>C++中每个表达式都有两个属性：类型和值类别。</p>
+<p><code>int</code>,<code>int&amp;</code>,<code>int*</code>,<code>double</code>等都是类型</p>
+<p>而值类别分为：lvalue,xvlaue,prvalue,glvalue,rvalue</p>
+<ul>
+<li>lvalue是指：拥有身份且不可被移动的表达式。</li>
+<li>xvalue是指：拥有身份且可被移动的表达式。</li>
+<li>prvalue是指：不拥有身份且可被移动的表达式。</li>
+<li>glvalue是指：拥有身份的表达式，lvalue和xvalue都是glvalue。</li>
+<li>rvalue是指：可被移动的表达式。prvalue和xvalue都是rvalue。</li>
+</ul>
+<p>拥有身份的含义是：可以确定表达式与另一个表达式是否指代同一个实体。例如两个右值1和1，你无法区分它们是一个1还是说只是值相等。但是<code>int a=1,b=1;</code>里面的a和b虽然值都是1，但是a和b不是一个实体。一般来讲通过比较两个左值的内存地址来区分它们是否指代同一个实体。</p>
+<p>glvalue可以自动转换为prvalue，例如<code>int x=a;</code> a会自动转换为prvalue</p>
+<p>lvalue具有以下特征：</p>
+<ul>
+<li>可以通过取址运算符获取其地址</li>
+<li>可以用来初始化左值引用</li>
+</ul>
+<p>prvalue具有以下特征：</p>
+<ul>
+<li>prvalue不会是多态的</li>
+<li>prvalue不会是不完全类型</li>
+<li>prvalue不会是抽象类型或数组</li>
+</ul>
+<p>xvalue也叫将亡值，它一般接近了生命周期的末尾，与移动语义有关。</p>
+<p>C++11之前，可以用<code>const type&amp;</code>的方式来引用右值例如<code>const int&amp; x=3;</code></p>
+<p>C++11增加了右值引用。右值引用延长了临时值的生命周期！</p>
+<p>例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(X&amp; x)</span> </span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;lvalue reference version&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(X&amp;&amp; x)</span> </span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;rvalue reference version&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">X <span class="title">returnX</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">X</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    X x;</span><br><span class="line">    <span class="built_in">func</span>(x); <span class="comment">// lvalue</span></span><br><span class="line">    <span class="built_in">func</span>(<span class="built_in">returnX</span>()); <span class="comment">// rvalue</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>左值引用：可以绑定到左值（非const），也可以绑定到右值（const）</li>
+<li>右值引用：只能绑定到右值</li>
+</ul>
+<h3 id="stdmove">std::move</h3>
+<p>move并不执行任何移动操作，也不会生成任何一byte的可执行代码。它所做的仅仅是一个强制类型转换。把参数强制转换为匿名右值引用。（注意：具名右值引用是左值，而匿名右值引用是右值。）</p>
+<p>例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">string a = <span class="string">&quot;hello&quot;</span>;</span><br><span class="line">string b = <span class="built_in">move</span>(a);</span><br><span class="line">cout &lt;&lt; b.<span class="built_in">size</span>() &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; a.<span class="built_in">size</span>();<span class="comment">// 5 0</span></span><br></pre></td></tr></table></figure>
+<p>这里我们把a用move转换为右值，以此来触发string的移动构造函数，从而a的size变为0，它的值给了b。且避免了深拷贝。（应该是直接把指向字符串的指针给了b，并不是复制了5个char）</p>
+<h2 id="stdforward">std::forward</h2>
+<p>与move类似，forward也执行一个转换操作，但是是有条件的转换。</p>
+<p>std::forward会根据传递给func函数实参（注意，不是形参）的左/右值类型进行转发。当传给func函数左值实参时，forward返回左值引用。而当传入func的实参为右值时，forward返回匿名右值引用。</p>
+<p>用途：配合万能引用实现完美转发。用于给函数提供右值类型的参数，使得其重载右值版本。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(A &amp;x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;L\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(A &amp;&amp;x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;R\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_f</span><span class="params">(T &amp;&amp;x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">f</span>(forward&lt;T&gt;(x));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A a;</span><br><span class="line">    A &amp;x = a;</span><br><span class="line">    <span class="built_in">do_f</span>(A&#123;&#125;); <span class="comment">// R</span></span><br><span class="line">    <span class="built_in">do_f</span>(a);   <span class="comment">// L</span></span><br><span class="line">    <span class="built_in">do_f</span>(x);   <span class="comment">// L</span></span><br><span class="line">    A &amp;&amp;y = A&#123;&#125;;</span><br><span class="line">    <span class="built_in">f</span>(y);             <span class="comment">// R</span></span><br><span class="line">    <span class="built_in">f</span>(forward&lt;A&gt;(y)); <span class="comment">// L</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">A &amp;&amp;y = A&#123;&#125;;</span><br><span class="line"><span class="built_in">f</span>(y);             <span class="comment">// L</span></span><br><span class="line"><span class="built_in">f</span>(forward&lt;A&gt;(y)); <span class="comment">// R</span></span><br></pre></td></tr></table></figure>
+<p>这个例子说明了forward的重要用途。由于具名右值引用是左值。因此需要forward来调用右值版本的重载。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="Oyyko WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"><i class="fa fa-tag"></i> 面试</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/18/chaoshu_tcp_control/" rel="prev" title="讲一讲 congestion control 的方法">
+                  <i class="fa fa-chevron-left"></i> 讲一讲 congestion control 的方法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/18/chaoshu_short_link/" rel="next" title="短链接">
+                  短链接 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-code"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Oyyko</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"Oyyko/utteranc-comments","issue_term":"pathname","theme":"github-light"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

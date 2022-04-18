@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#dc143c">
+<meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,300italic,400,400italic,700,700italic%7CComing+Soon:300,300italic,400,400italic,700,700italic%7CJetBrains+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.oyyko.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":false,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="锁C++实现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="锁C++实现">
+<meta property="og:url" content="https://blog.oyyko.com/2022/04/18/chaoshu_mutex/index.html">
+<meta property="og:site_name" content="Oyyko&#39;s Blog">
+<meta property="og:description" content="锁C++实现">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-87e63d837a3306724d939091d8b6c45b_1440w.jpg">
+<meta property="article:published_time" content="2022-04-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-18T02:55:11.472Z">
+<meta property="article:author" content="Oyyko">
+<meta property="article:tag" content="面试">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic4.zhimg.com/80/v2-87e63d837a3306724d939091d8b6c45b_1440w.jpg">
+
+
+<link rel="canonical" href="https://blog.oyyko.com/2022/04/18/chaoshu_mutex/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://blog.oyyko.com/2022/04/18/chaoshu_mutex/","path":"2022/04/18/chaoshu_mutex/","title":"锁C++实现"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>锁C++实现 | Oyyko's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Oyyko's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">29</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">20</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">64</span></a></li>
+        <li class="menu-item menu-item-word"><a href="/word/" rel="section"><i class="fa fa-pen-nib fa-fw"></i>word</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BB%E5%86%99%E9%94%81c%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">读写锁C++实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#c-%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">C++ 原子操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-number">2.1.</span> <span class="nav-text">缓存一致性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-atomic"><span class="nav-number">2.2.</span> <span class="nav-text">C++ ATOMIC</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#futex"><span class="nav-number">3.</span> <span class="nav-text">FUTEX</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Oyyko"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Oyyko</p>
+  <div class="site-description" itemprop="description">Internet is cool, but you cannot download love.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/oyyko" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oyyko" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://leetcode-cn.com/oyyko" title="Leetcode → https:&#x2F;&#x2F;leetcode-cn.com&#x2F;oyyko" rel="noopener" target="_blank"><i class="fa fa-code fa-fw"></i>Leetcode</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:finalwind42@gmail.com" title="E-Mail → mailto:finalwind42@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://blog.oyyko.com/2022/04/18/chaoshu_mutex/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Oyyko">
+      <meta itemprop="description" content="Internet is cool, but you cannot download love.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Oyyko's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          锁C++实现
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-04-18 00:00:00 / Modified: 10:55:11" itemprop="dateCreated datePublished" datetime="2022-04-18T00:00:00+08:00">2022-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%A2%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">面试</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>锁C++实现 <span id="more"></span></p>
+<h3 id="读写锁c实现">读写锁C++实现</h3>
+<figure>
+<img src="https://pic4.zhimg.com/80/v2-87e63d837a3306724d939091d8b6c45b_1440w.jpg" alt="img" /><figcaption aria-hidden="true">img</figcaption>
+</figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">readWriteLock</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    std::mutex readMtx;</span><br><span class="line">    std::mutex writeMtx;</span><br><span class="line">    <span class="keyword">int</span> readCnt; <span class="comment">// 已加读锁个数</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">readWriteLock</span>() : <span class="built_in">readCnt</span>(<span class="number">0</span>) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">readLock</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        readMtx.<span class="built_in">lock</span>();</span><br><span class="line">        <span class="keyword">if</span> (++readCnt == <span class="number">1</span>) &#123;</span><br><span class="line">            writeMtx.<span class="built_in">lock</span>();  <span class="comment">// 存在线程读操作时，写加锁（只加一次）</span></span><br><span class="line">        &#125;</span><br><span class="line">        readMtx.<span class="built_in">unlock</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">readUnlock</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        readMtx.<span class="built_in">lock</span>();</span><br><span class="line">        <span class="keyword">if</span> (--readCnt == <span class="number">0</span>) &#123; <span class="comment">// 没有线程读操作时，释放写锁</span></span><br><span class="line">            writeMtx.<span class="built_in">unlock</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        readMtx.<span class="built_in">unlock</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">writeLock</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        writeMtx.<span class="built_in">lock</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">writeUnlock</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        writeMtx.<span class="built_in">unlock</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>从而实现上面描述的功能。</p>
+<h3 id="c-原子操作">C++ 原子操作</h3>
+<p>原子操作即要么全部完成，要么没有执行的操作。</p>
+<p>Intel x86指令集提供了指令前缀lock用于锁定前端串行总线（FSB），保证了指令执行时不会受到其他处理器的干扰。</p>
+<p>使用lock指令前缀后，处理器间对内存的并发访问（读/写）被禁止，从而保证了指令的原子性</p>
+<p>当一个CPU核执行一个线程去访问数据做操作的时候，它会向总线上发送一个LOCK信号，此时其他的线程想要去请求主内存的时候，就会被阻塞，这样该处理器核心就可以独享这个共享内存，而且释放锁后，会调用smp_mb invalide，使其他核心的缓存失效。</p>
+<h4 id="缓存一致性">缓存一致性</h4>
+<p>当某核心对其缓存中的数据进行了操作之后，就通知其他核心放弃储存在它们内部的对应的缓存，或者从主内存中重新读取此数据。缓存一致性主要是通过MESI协议实现</p>
+<h4 id="c-atomic">C++ ATOMIC</h4>
+<p>在c++中，提供了atomic原子库，提供了对一些常用数据类型进行<strong>原子操作</strong>的接口</p>
+<p><strong>std::atomic_flag</strong>是一个原子的布尔类型，可支持两种原子操作： 1.<strong>test_and_set</strong>： 如果atomic_flag对象被设置，则返回true; 如果atomic_flag对象未被设置，则设置之，返回false 2.<strong>clear</strong>： 清除atomic_flag对象</p>
+<p>自旋锁 自旋锁是一种busy-waiting的锁，即进程如果申请不到锁，会一直不断地循环检查锁（状态位）是否可用（会消耗cpu时间），直到获取到这个锁为止。 优点：不会使进程状态发生切换，即进程一直处于active状态，不会进入阻塞状态，获得锁后，不用进行上下文切换，执行速度快。 缺点：没有获得锁前，会一直消耗cpu时间。</p>
+<p>可以用<code>std::atomic_flag</code>实现自旋锁</p>
+<h3 id="futex">FUTEX</h3>
+<p>在Linux下，信号量和线程互斥锁的实现都是通过futex系统调用实现。 Futex 是一个提升效率的机制。在Unix系统中，传统的进程间同步机制都是通过对内核对象操作来完成的，这个内核对象在需要同步的进程中都是可见的，进程间的同步是通过系统调用在内核中完成。这种同步方式因为涉及用户态和内核态的切换，效率比较低。而且只要使用了传统的同步机制，进入临界区时即使没有其他的进程竞争也必须切换到内核态来检查内核同步对象的状态，这种不必要的切换显然带来了大量的浪费。 Futex就是为了解决这个问题而诞生的。Futex是一种用户态和内核态混合的同步机制，使用Futex同步机制，如果用于进程间同步，需要先创建一块共享内存，Futex变量就位于共享区。同时对Futex变量的操作必须是原子的，当进程试图进入临界区或者退出临界区的时候，首先检查共享内存中的Futex变量，如果没有其他的进程也申请使用临界区，则只修改Futex变量而不再执行系统调用。如果同时有其他进程在申请使用临界区，还是需要通过系统调用去执行等待或唤醒操作。这样通过用户态的Futex变量的控制，减少了进程在用户态和内核态之间切换的次数，从而减少了系统同步的开销。</p>
+<p>mutex相关的函数并不是linux kernel实现的，而是glibc库实现的</p>
+<p>锁最后也是由原子操作来实现的</p>
+<p>来源：https://zhiqiang.org/coding/std-mutex-implement.html</p>
+<p>在 C++里，标准库<code>std::mutex</code>只是一个<code>pthread_mutex_t</code>的封装</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">mutex</span> &#123;</span></span><br><span class="line">    <span class="keyword">pthread_mutex_t</span> _M_mutex;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">mutex</span>() &#123; _M_mutex = PTHREAD_MUTEX_INITIALIZER; &#125;</span><br><span class="line">    ~<span class="built_in">mutex</span>() &#123; <span class="built_in">pthread_mutex_destroy</span>(&amp;_M_mutex); &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123; <span class="built_in">pthread_mutex_lock</span>(&amp;_M_mutex); &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">try_lock</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="built_in">pthread_mutex_trylock</span>(&amp;_M_mutex) == <span class="number">0</span>; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123; <span class="built_in">pthread_mutex_unlock</span>(&amp;_M_mutex); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因此我们需要把眼光挪向<code>pthread</code>库的<code>pthread_mutex_t</code>以及相关函数。</p>
+<p><code>pthread_mutex_t</code>在 x86 下占据 32 个字节，内部布局如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> __<span class="title">pthread_mutex_s</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> __lock;                 <span class="comment">//!&lt; mutex状态，0：未占用；1：占用。</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> __count;       <span class="comment">//!&lt; 可重入锁时，持有线程上锁的次数。</span></span><br><span class="line">    <span class="keyword">int</span> __owner;                <span class="comment">//!&lt; 持有线程的线程ID。</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> __nusers;</span><br><span class="line">    <span class="keyword">int</span> __kind;                 <span class="comment">//!&lt; 上锁类型。</span></span><br><span class="line">    <span class="keyword">int</span> __spins;</span><br><span class="line">    <span class="keyword">__pthread_list_t</span> __list;</span><br><span class="line">  &#125; __data;</span><br><span class="line">&#125; <span class="keyword">pthread_mutex_t</span>;</span><br></pre></td></tr></table></figure>
+<p>​ 其中上锁类型有下面几种取值：</p>
+<ul>
+<li>PTHREAD_MUTEX_TIMED_NP ，这是缺省值，也就是普通锁。</li>
+<li>PTHREAD_MUTEX_RECURSIVE_NP ，可重入锁，允许同一个线程对同一个锁成功获得多次，并通过多次 unlock 解锁。</li>
+<li>PTHREAD_MUTEX_ERRORCHECK_NP ，检错锁，如果同一个线程重复请求同一个锁，则返回 EDEADLK ，否则与 PTHREAD_MUTEX_TIMED_NP 类型相同。</li>
+<li>PTHREAD_MUTEX_ADAPTIVE_NP ，自适应锁，自旋锁与普通锁的混合。</li>
+</ul>
+<p>下面我们看最关键的加锁函数<code>pthread_mutex_lock</code>，它的第一个参数是锁对象指针，第二个参数是上面的锁类型。如果是普通锁，它的实现就是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pthread_mutex_lock(pthread_mutex_t* mutex, int type) &#123;</span><br><span class="line">    if (type == PTHREAD_MUTEX_TIMED_NP) &#123;</span><br><span class="line">        LLL_MUTEX_LOCK (mutex);</span><br><span class="line">    &#125;</span><br><span class="line">    // else ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面我们看宏<code>LLL_MUTEX_LOCK</code>的实现：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># define LLL_MUTEX_LOCK(mutex) \</span><br><span class="line">  lll_lock ((mutex)-&gt;__data.__lock, PTHREAD_MUTEX_PSHARED (mutex))</span><br></pre></td></tr></table></figure>
+<p>其中<code>PTHREAD_MUTEX_PSHARED</code>用来区分线程锁还是进程锁。我们可以只关心线程锁，此时第二个参数就是<code>LLL_PRIVATE=0</code>。 而<code>lll_lock</code>的实现如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#define lll_lock(futex, private) \</span><br><span class="line">  (void)                                      \</span><br><span class="line">    (&#123; int ignore1, ignore2;                              \</span><br><span class="line">       if (__builtin_constant_p (private) &amp;&amp; (private) == LLL_PRIVATE)        \</span><br><span class="line">     __asm __volatile (&quot;cmpxchgl %1, %2\n\t&quot;                   \</span><br><span class="line">               &quot;jnz _L_lock_%=\n\t&quot;                   \</span><br><span class="line">               &quot;.subsection 1\n\t&quot;                    \</span><br><span class="line">               &quot;.type _L_lock_%=,@function\n&quot;             \</span><br><span class="line">               &quot;_L_lock_%=:\n&quot;                    \</span><br><span class="line">               &quot;1:\tleal %2, %%ecx\n&quot;                 \</span><br><span class="line">               &quot;2:\tcall __lll_lock_wait_private\n&quot;           \</span><br><span class="line">               &quot;3:\tjmp 18f\n&quot;                    \</span><br><span class="line">               &quot;4:\t.size _L_lock_%=, 4b-1b\n\t&quot;              \</span><br><span class="line">               &quot;.previous\n&quot;                      \</span><br><span class="line">               LLL_STUB_UNWIND_INFO_3                 \</span><br><span class="line">               &quot;18:&quot;                          \</span><br><span class="line">               : &quot;=a&quot; (ignore1), &quot;=c&quot; (ignore2), &quot;=m&quot; (futex)     \</span><br><span class="line">               : &quot;0&quot; (0), &quot;1&quot; (1), &quot;m&quot; (futex),           \</span><br><span class="line">                 &quot;i&quot; (MULTIPLE_THREADS_OFFSET)            \</span><br><span class="line">               : &quot;memory&quot;);                       \</span><br></pre></td></tr></table></figure>
+<p>这一段是直接用汇编实现的。其核心指令是 cmpxchgl ，汇编级别的<code>CAS</code>（ compare and swap ）。如果 swap 不成功，则调用<code>__lll_lock_wait_private</code>让调度线程（进入操作系统的同优先级的任务队列末尾）。</p>
+<p>从这里看，<code>std::mutex</code>的并没有加入自旋等待的实现。那么大家说的又是什么呢？其实是<code>pthread_mutex_lock</code>的<code>PTHREAD_MUTEX_ADAPTIVE_NP</code>锁方式。我们来看它的实现：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">if (type == PTHREAD_MUTEX_ADAPTIVE_NP) &#123;</span><br><span class="line">    if (LLL_MUTEX_TRYLOCK (mutex) != 0) &#123;</span><br><span class="line">        int cnt = 0;</span><br><span class="line">        int max_cnt = MIN (MAX_ADAPTIVE_COUNT, mutex-&gt;__data.__spins * 2 + 10);</span><br><span class="line">        do &#123;</span><br><span class="line">            if (cnt++ &gt;= max_cnt) &#123;</span><br><span class="line">                LLL_MUTEX_LOCK (mutex);</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            BUSY_WAIT_NOP;</span><br><span class="line">        &#125; while (LLL_MUTEX_TRYLOCK (mutex) != 0);</span><br><span class="line"></span><br><span class="line">        mutex-&gt;__data.__spins += (cnt - mutex-&gt;__data.__spins) / 8;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个实现已经和<a target="_blank" rel="noopener" href="https://zhiqiang.org/coding/folly-micro-spinlock.html"><code>folly::MicroSpinLock</code></a>基本没有两样了，甚至细节处理得更好一些，比如它每次的最大尝试次数是动态的，会根据之前的尝试次数调整。</p>
+<p>但我还是更喜欢用<code>folly::MicroSpinLock</code>，因为内存结构更简单（只占一个字节，而<code>pthread_mutex_t</code>需要 32 个字节！）， API 相比起 C 风格的 pthread 也更顺手一些。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="Oyyko WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"><i class="fa fa-tag"></i> 面试</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/18/chaoshu_load_balancer/" rel="prev" title="负载均衡">
+                  <i class="fa fa-chevron-left"></i> 负载均衡
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/18/chaoshu_lru/" rel="next" title="LRU 和 LFU 的实现，要非常详细的数据结果和过程结构，尽可能的支持高并发">
+                  LRU 和 LFU 的实现，要非常详细的数据结果和过程结构，尽可能的支持高并发 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-code"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Oyyko</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"Oyyko/utteranc-comments","issue_term":"pathname","theme":"github-light"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#dc143c">
+<meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,300italic,400,400italic,700,700italic%7CComing+Soon:300,300italic,400,400italic,700,700italic%7CJetBrains+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.oyyko.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"utterances","storage":true,"lazyload":false,"nav":null,"activeClass":"utterances"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Docker: container 和 image 的区别，如何创建一个image">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker container 和 image 的区别，如何创建一个image">
+<meta property="og:url" content="https://blog.oyyko.com/2022/04/18/chaoshu_docker_image/index.html">
+<meta property="og:site_name" content="Oyyko&#39;s Blog">
+<meta property="og:description" content="Docker: container 和 image 的区别，如何创建一个image">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.stack.imgur.com/vGuay.png">
+<meta property="og:image" content="https://phoenixnap.com/kb/wp-content/uploads/2021/04/container-layers.png">
+<meta property="article:published_time" content="2022-04-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-18T02:58:36.655Z">
+<meta property="article:author" content="Oyyko">
+<meta property="article:tag" content="面试">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.stack.imgur.com/vGuay.png">
+
+
+<link rel="canonical" href="https://blog.oyyko.com/2022/04/18/chaoshu_docker_image/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://blog.oyyko.com/2022/04/18/chaoshu_docker_image/","path":"2022/04/18/chaoshu_docker_image/","title":"Docker container 和 image 的区别，如何创建一个image"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Docker container 和 image 的区别，如何创建一个image | Oyyko's Blog</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Oyyko's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">29</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">20</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">64</span></a></li>
+        <li class="menu-item menu-item-word"><a href="/word/" rel="section"><i class="fa fa-pen-nib fa-fw"></i>word</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#docker-container-%E5%92%8C-image-%E7%9A%84%E5%8C%BA%E5%88%AB%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAimage"><span class="nav-number">1.</span> <span class="nav-text">Docker: container 和 image 的区别，如何创建一个image</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Oyyko"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Oyyko</p>
+  <div class="site-description" itemprop="description">Internet is cool, but you cannot download love.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/oyyko" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oyyko" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://leetcode-cn.com/oyyko" title="Leetcode → https:&#x2F;&#x2F;leetcode-cn.com&#x2F;oyyko" rel="noopener" target="_blank"><i class="fa fa-code fa-fw"></i>Leetcode</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:finalwind42@gmail.com" title="E-Mail → mailto:finalwind42@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://blog.oyyko.com/2022/04/18/chaoshu_docker_image/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Oyyko">
+      <meta itemprop="description" content="Internet is cool, but you cannot download love.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Oyyko's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Docker container 和 image 的区别，如何创建一个image
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-04-18 00:00:00 / Modified: 10:58:36" itemprop="dateCreated datePublished" datetime="2022-04-18T00:00:00+08:00">2022-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%A2%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">面试</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Docker: container 和 image 的区别，如何创建一个image <span id="more"></span></p>
+<h2 id="docker-container-和-image-的区别如何创建一个image">Docker: container 和 image 的区别，如何创建一个image</h2>
+<p>图像的一个实例称为容器</p>
+<p>如果你启动这个镜像，你就有了这个镜像的运行容器。您可以拥有多个运行同一镜像的容器。</p>
+<p>图片是一个惰性的、不可变的文件，它本质上是一个容器的快照。图像是使用build命令创建的，在使用run命令启动的时候会生成一个容器。</p>
+<p>图像存储在 Docker 注册表中，例如<a target="_blank" rel="noopener" href="https://registry.hub.docker.com/">registry.hub.docker.com</a>。因为它们可以变得非常大，所以图像被设计为由其他图像层组成，从而在通过网络传输图像时允许发送最少量的数据。</p>
+<p>可以<code>docker images</code>来显示本地图像。</p>
+<p>用编程的比喻来说，如果图像是一个类，那么容器就是一个类的实例——一个运行时对象。</p>
+<p>图像：用于创建容器的文件系统和配置（只读）应用程序。</p>
+<p><strong>容器</strong>：容器和图像之间的主要区别在于顶部可写层。<strong>容器正在运行具有顶层可写层</strong>的 Docker 镜像实例 。容器运行实际的应用程序。容器包括应用程序及其所有依赖项。当容器被删除时，可写层也被删除。底层图像保持不变。</p>
+<figure>
+<img src="https://i.stack.imgur.com/vGuay.png" alt="在此处输入图像描述" /><figcaption aria-hidden="true">在此处输入图像描述</figcaption>
+</figure>
+<p>虽然将容器视为运行映像最简单，但这并不<em>十分</em>准确。</p>
+<p>图像实际上是一个可以变成容器的模板。为了将镜像变成容器，Docker 引擎获取镜像，在顶部添加一个读写文件系统，并初始化各种设置，包括网络端口、容器名称、ID 和资源限制。一个正在运行的容器有一个当前正在执行的进程，但是一个容器也可以被停止（或者用 Docker 的术语来说是<em>退出</em>）。退出的容器<em>与</em>映像不同，因为它可以重新启动并保留其设置和任何文件系统更改。</p>
+<figure>
+<img src="https://phoenixnap.com/kb/wp-content/uploads/2021/04/container-layers.png" alt="Container Layer和Image层的简要说明" /><figcaption aria-hidden="true">Container Layer和Image层的简要说明</figcaption>
+</figure>
+<p>从 Dockerfile 创建映像的命令是<strong><code>docker build</code></strong>.</p>
+<p>然后将图像用作模板（或基础），开发人员可以复制并使用它来运行应用程序。应用程序需要一个隔离的环境来运行——一个<strong>容器</strong>。</p>
+<p>这个环境不仅仅是一个虚拟的“空间”。它完全依赖于创建它的图像。源代码、文件、依赖项和二进制库都可以在 Docker 映像中找到，它们构成了容器。</p>
+<p>要从图像创建容器层，请使用命令<strong><code>docker create</code></strong>。</p>
+<p>最后，从现有映像启动容器后，启动其服务并运行应用程序。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>Buy me a coffee</div>
+  <button>
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="Oyyko WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"><i class="fa fa-tag"></i> 面试</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/18/chaoshu_docker/" rel="prev" title="Docker docker解决什么问题">
+                  <i class="fa fa-chevron-left"></i> Docker docker解决什么问题
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/18/chaoshu_weibo_comment/" rel="next" title="设计微博评论的存储系统">
+                  设计微博评论的存储系统 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-code"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Oyyko</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{"enable":true,"repo":"Oyyko/utteranc-comments","issue_term":"pathname","theme":"github-light"}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>
