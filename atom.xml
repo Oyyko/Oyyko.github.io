@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Oyyko&#39;s Blog</title>
+  
+  
+  <link href="https://blog.oyyko.com/atom.xml" rel="self"/>
+  
+  <link href="https://blog.oyyko.com/"/>
+  <updated>2022-07-07T09:35:41.300Z</updated>
+  <id>https://blog.oyyko.com/</id>
+  
+  <author>
+    <name>Oyyko</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>C++ 笔记4</title>
+    <link href="https://blog.oyyko.com/2022/07/07/C++4/"/>
+    <id>https://blog.oyyko.com/2022/07/07/C++4/</id>
+    <published>2022-07-06T16:00:00.000Z</published>
+    <updated>2022-07-07T09:35:41.300Z</updated>
+    
+    <content type="html"><![CDATA[<p>C++ 笔记4</p><span id="more"></span><h2 id="引用与重载">引用与重载</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(<span class="type">double</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;DOUBLE&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(<span class="type">int</span> &amp;x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;INT&amp;&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">f</span>(<span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>这段代码会输出DOUBLE 原因在于 2是右值不能用于初始化一个<code>int&amp;</code>则只能选择第一个版本的函数重载</p><h2 id="重载的其他规则">重载的其他规则</h2><p><code>T</code>和<code>const T</code>同样<code>T*</code>和<code>const T*</code>不一样但是和<code>T* const</code>一样<code>T&amp;</code>和<code>const T&amp;</code>不一样</p><h2 id="模版实现数组求平均值">模版实现数组求平均值</h2>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;C++ 笔记4&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Cpp" scheme="https://blog.oyyko.com/categories/Cpp/"/>
+    
+    
+    <category term="Cpp" scheme="https://blog.oyyko.com/tags/Cpp/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>BASH脚本</title>
+    <link href="https://blog.oyyko.com/2022/05/27/bash/"/>
+    <id>https://blog.oyyko.com/2022/05/27/bash/</id>
+    <published>2022-05-26T16:00:00.000Z</published>
+    <updated>2022-05-27T08:02:59.138Z</updated>
+    
+    <content type="html"><![CDATA[<p>BASH 条件判断 <span id="more"></span> ## test 和 [</p><p>内置命令 test 根据表达式expr 求值的结果返回 0（真）或1（假）。也可以使用方括号：test expr 和 [ expr ] 是等价的。 可以用 $?检查返回值；可以使用 &amp;&amp; 和 ||操作返回值；也可以用本技巧后面介绍的各种条件结构测试返回值。</p><p>[ian@pinguino ~]$ test 3 -gt 4 &amp;&amp; echo True || echo false</p><p>false</p><p>[ian@pinguino ~]$ [ "abc" != "def" ];echo $?</p><p>0</p><p>[ian@pinguino ~]$ test -d "$HOME" ;echo $?</p><p>0</p><p>在清单 1 的第一个示例中，-gt操作符对两个字符值之间执行算术比较。在第二个示例中，用 [ ]的形式比较两个字符串不相等。在最后一个示例中，测试 HOME变量的值，用单目操作符 -d 检查它是不是目录。</p><p>可以用 -eq、 -ne、-lt、 -le、 -gt 或 -ge比较算术值，它们分别表示等于、不等于、小于、小于等于、大于、大于等于。</p><p>可以分别用操作符 =、 !=、&lt; 和 &gt;比较字符串是否相等、不相等或者第一个字符串的排序在第二个字符串的前面或后面。单目操作符-z 测试 null 字符串，如果字符串非空 -n 返回True（或者根本没有操作符）。</p><p>说明：shell 也用 &lt; 和 &gt; 操作符进行重定向，所以必须用 &lt; 或&gt; 加以转义。清单 2显示了字符串测试的更多示例。检查它们是否如您预期的一样。</p><h2 id="一些常见的文件测试-操作符-特征">一些常见的文件测试 操作符特征</h2><p>-d 目录</p><p>-e 存在（也可以用 -a）</p><p>-f 普通文件</p><p>-h 符号连接（也可以用 -L）</p><p>-p 命名管道</p><p>-r 可读</p><p>-s 非空</p><p>-S 套接字</p><p>-w 可写</p><p>-N 从上次读取之后已经做过修改</p><h2id="除了上面的单目测试还可以使用表-2-所示的双目操作符比较两个文件">除了上面的单目测试，还可以使用表2 所示的双目操作符比较两个文件：</h2><p>表 2. 测试一对文件 操作符 为 True 的情况</p><p>-nt 测试 file1 是否比 file2 更新。修改日期将用于这次和下次比较。</p><p>-ot 测试 file1 是否比 file2 旧。</p><p>-ef 测试 file1 是不是 file2 的硬链接。</p><h2 id="清单-5.-分配和测试算术表达式">清单 5. 分配和测试算术表达式</h2><p>[ian@pinguino ~]$ let x=2 y=2**3 z=y*3;echo $? $x $y $z</p><p>0 2 8 24</p><p>[ian@pinguino ~]$ (( w=(y/x) + ( (~ ++x) &amp; 0x0f ) )); echo $? $x$y $w</p><p>0 3 8 16</p><p>[ian@pinguino ~]$ (( w=(y/x) + ( (~ ++x) &amp; 0x0f ) )); echo $? $x$y $w</p><p>0 4 8 13</p><p>清单 6. 使用 [[ 复合命令</p><p>[ian@pinguino ~]$ [[ ( -d "<span class="math inline">\(HOME&quot; )&amp;&amp; ( -w &quot;\)</span>HOME" ) ]] &amp;&amp;</p><blockquote><p>echo "home is a writable directory"</p></blockquote><p>home is a writable directory</p><p>在使用 = 或 != 操作符时，复合命令 [[还能在字符串上进行模式匹配。匹配的方式就像清单 7 所示的通配符匹配。</p><p>清单 7. 用 [[ 进行通配符测试</p><p>[ian@pinguino ~]$ [[ "abc def .d,x--" == a[abc]<em> ?d</em> ]]; echo$?</p><p>0</p><p>[ian@pinguino ~]$ [[ "abc def c" == a[abc]<em> ?d</em> ]]; echo$?</p><p>1</p><p>[ian@pinguino ~]$ [[ "abc def d,x" == a[abc]<em> ?d</em> ]]; echo$?</p><p>1</p><p>甚至还可以在 [[ 复合命令内执行算术测试，但是千万要小心。除非在 ((复合命令内，否则 &lt; 和 &gt;操作符会把操作数当成字符串比较并在当前排序序列中测试它们的顺序。清单 8用一些示例演示了这一点。</p><p>清单 8. 用 [[ 包含算术测试</p><p>[ian@pinguino ~]$ [[ "abc def d,x" == a[abc]<em> ?d</em> || (( 3 &gt;2 )) ]]; echo $?</p><p>0</p><p>[ian@pinguino ~]$ [[ "abc def d,x" == a[abc]<em> ?d</em> || 3 -gt 2]]; echo $?</p><p>0</p><p>[ian@pinguino ~]$ [[ "abc def d,x" == a[abc]<em> ?d</em> || 3 &gt; 2]]; echo $?</p><p>0</p><p>[ian@pinguino ~]$ [[ "abc def d,x" == a[abc]<em> ?d</em> || a &gt; 2]]; echo $?</p><p>0</p><p>[ian@pinguino ~]$ [[ "abc def d,x" == a[abc]<em> ?d</em> || a -gt 2]]; echo $?</p><p>-bash: a: unbound variable</p><p>条件测试</p><p>虽然使用以上的测试和 &amp;&amp;、 || 控制操作符能实现许多编程，但bash 还包含了更熟悉的 “if, then, else” 和 case结构。学习完这些之后，将学习循环结构，这样您的工具箱将真正得到扩展。</p><p>If、then、else 语句</p><p>bash 的 if命令是个复合命令，它测试一个测试或命令（$?）的返回值，并根据返回值为True（0）或 False（不为 0）进行分支。虽然上面的测试只返回 0 或 1值，但命令可能返回其他值。请参阅 LPI exam 102 prep: Shells, scripting,programming, and compiling 教程学习这方面的更多内容。</p><p>Bash 中的 if 命令有一个 then 子句，子句中包含测试或命令返回 0时要执行的命令列表，可以有一个或多个可选的 elif子句，每个子句可执行附加的测试和一个 then子句，子句中又带有相关的命令列表，最后是可选的 else子句及命令列表，在前面的测试或 elif子句中的所有测试都不为真的时候执行，最后使用 fi 标记表示该结构结束。</p><p>使用迄今为止学到的东西，现在能够构建简单的计算器来计算算术表达式，如清单9 所示：</p><p>清单 9. 用 if、then、else 计算表达式</p><p>[ian@pinguino ~]$ function mycalc ()</p><blockquote><p>{</p></blockquote><blockquote><p>local x</p></blockquote><blockquote><p>if [ $# -lt 1 ]; then</p></blockquote><blockquote><p>echo "This function evaluates arithmetic for you if you give itsome"</p></blockquote><blockquote><p>elif (( $* )); then</p></blockquote><blockquote><p>let x="$*"</p></blockquote><blockquote><p>echo "$* = $x"</p></blockquote><blockquote><p>else</p></blockquote><blockquote><p>echo "$* = 0 or is not an arithmetic expression"</p></blockquote><blockquote><p>fi</p></blockquote><blockquote><p>}</p></blockquote><p>[ian@pinguino ~]$ mycalc 3 + 4</p><p>3 + 4 = 7</p><p>[ian@pinguino ~]$ mycalc 3 + 4**3</p><p>3 + 4**3 = 67</p><p>[ian@pinguino ~]$ mycalc 3 + (4**3 /2)</p><p>-bash: syntax error near unexpected token `('</p><p>[ian@pinguino ~]$ mycalc 3 + "(4**3 /2)"</p><p>3 + (4**3 /2) = 35</p><p>[ian@pinguino ~]$ mycalc xyz</p><p>xyz = 0 or is not an arithmetic expression</p><p>[ian@pinguino ~]$ mycalc xyz + 3 + "(4**3 /2)" + abc</p><p>xyz + 3 + (4**3 /2) + abc = 35</p><p>这个计算器利用 local 语句将 x 声明为局部变量，只能在 mycalc函数的范围内使用。let 函数具有几个可用的选项，可以执行与它密切关联的declare 函数。请参考 bash 手册或使用 help let 获得更多信息。</p><p>如清单 9 所示，需要确保在表达式使用 shell 元字符 —— 例如(、)、*、&gt;和 &lt; 时 ——正确地对表达式转义。无论如何，现在有了一个非常方便的小计算器，可以像shell 那样进行算术计算。</p><p>在清单 9 中可能注意到 else 子句和最后的两个示例。可以看到，把 xyz传递给 mycalc 并没有错误，但计算结果为0。这个函数还不够灵巧，不能区分最后使用的示例中的字符值，所以不能警告用户。可以使用字符串模式匹配测试（例如</p><p>[[ ! ("$<em>" == </em>[a-zA-Z]* ]]</p><p>，或使用适合自己范围的形式）消除包含字母表字符的表达式，但是这会妨碍在输入中使用16 进制标记，因为使用 16 进制标记时可能要用 0x0f 表示 15。实际上，shell允许的基数最高为 64（使用 base#value 标记），所以可以在输入中加入 _ 和 @合法地使用任何字母表字符。8 进制和 16 进制使用常用的标记方式，开头为 0表示八进制，开头为 0x 或 0X 表示 16 进制。清单 10 显示了一些示例。</p><p>清单 10. 用不同的基数进行计算</p><p>[ian@pinguino ~]$ mycalc 015</p><p>015 = 13</p><p>[ian@pinguino ~]$ mycalc 0xff</p><p>0xff = 255</p><p>[ian@pinguino ~]$ mycalc 29#37</p><p>29#37 = 94</p><p>[ian@pinguino ~]$ mycalc 64#1az</p><p>64#1az = 4771</p><p>[ian@pinguino ~]$ mycalc 64#1azA</p><p>64#1azA = 305380</p><p>[ian@pinguino ~]$ mycalc 64#1azA_@</p><p>64#1azA_@ = 1250840574</p><p>[ian@pinguino ~]$ mycalc 64#1az*64**3 + 64#A_@</p><p>64#1az*64**3 + 64#A_@ = 1250840574</p><p>对输入进行的额外处理超出了本技巧的范围，所以请小心使用这个计算器。</p><p>elif 语句非常方便。它允许简化缩进，从而有助于脚本编写。在清单 11中可能会对 type 命令在 mycalc 函数中的输出感到惊讶。</p><p>清单 11. Type mycalc</p><p>[ian@pinguino ~]$ type mycalc</p><p>mycalc is a function</p><p>mycalc ()</p><p>{</p><p>local x;</p><p>if [ $# -lt 1 ]; then</p><p>echo "This function evaluates arithmetic for you if you give itsome";</p><p>else</p><p>if (( $* )); then</p><p>let x="$*";</p><p>echo "$* = $x";</p><p>else</p><p>echo "$* = 0 or is not an arithmetic expression";</p><p>fi;</p><p>fi</p><p>}</p><p>当 然，也可以只用 $(( 表达式 )) 和 echo 命令进行 shell算术运算，如清单 12所示。这样就不必学习关于函数或测试的任何内容，但是请注意 shell不会解释元字符，例如 *，因此元字符不能在 (( 表达式 )) 或 [[ 表达式 ]]中那样正常发挥作用。</p><p>清单 12. 在 shell 中用 echo 和 $(( )) 直接进行计算</p><p>[ian@pinguino ~]$ echo $((3 + (4**3 /2)))</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;BASH 条件判断</summary>
+    
+    
+    
+    <category term="bash" scheme="https://blog.oyyko.com/categories/bash/"/>
+    
+    
+    <category term="bash" scheme="https://blog.oyyko.com/tags/bash/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>B树，B+树</title>
+    <link href="https://blog.oyyko.com/2022/04/18/chaoshu_Btree/"/>
+    <id>https://blog.oyyko.com/2022/04/18/chaoshu_Btree/</id>
+    <published>2022-04-17T16:00:00.000Z</published>
+    <updated>2022-04-18T02:52:01.568Z</updated>
+    
+    <content type="html"><![CDATA[<p>B树 <span id="more"></span></p><p>2022-03-22 hw</p><p>Oyyko</p><h2 id="b树和b树的区别b树应用在哪">B树和B+树的区别，B+树应用在哪?</h2><p>B树是一种多路平衡查找树。B树允许每个节点有多个子节点。</p><p>B树里面，索引和数据在内存中相邻，称为一组键值对。而一个B树的节点，由多组键值对组成。</p><p>B树有一个参数m，参数为m的B树可以称为m阶B树。</p><p>其中：</p><p>每个节点最多有m-1个键值对</p><p>根节点最少有1个键值对</p><p>非根节点最少有m/2个键值对</p><p>每个节点中的关键字都按照从小到大的顺序排列，每个关键字的左子树中的所有关键字都小于它，而右子树中的所有关键字都大于它。</p><p>所有叶子节点都位于同一层。</p><p>B+树与B树的相同点：</p><ul><li>根节点至少一个元素</li><li>非根节点元素范围：m/2 &lt;= k &lt;= m-1</li></ul><p>不同点：B+树中的数据只分布在叶子节点上。</p><p>B+树中有两种节点，索引节点和叶子节点。索引节点不存储数据，只存储索引。</p><p>内部结点中的key都按照从小到大的顺序排列，对于内部结点中的一个key，左树中的所有key都小于它，右子树中的key都大于等于它。叶子结点中的记录也按照key的大小排列。</p><p>每个叶子结点都存有相邻叶子结点的指针，叶子结点本身依关键字的大小自小而大顺序链接。</p><p>父节点存有右孩子的第一个元素的索引，用于进行比较查找。</p><p>B树不方便遍历所有元素，而B+树因为所有的叶子节点可以构成一个有序链表，因此能够快速方便的遍历所有元素。</p><p>B+树所有叶子节点构成有序链表还方便了我们进行区间查找，例如找出所有关键字大于50且小于300的元素。那么B+树里面我们可以找出边界，然后沿着链表遍历即可得到所有元素。</p><p>B+树所有的查询都要到叶子节点才终止，性能比较稳定。而B树可以提前查到，因此不稳定。</p><p>由于B+树不将数据信息存放进索引节点，也就是说节点信息的容量变小，那么一次性可以放进内存的节点数变多，意味着I/O操作变少，以此提高性能。</p><p>MYSQL使用B+树作为索引。文件系统中也使用B+树作为文件系统的索引。</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;B树</summary>
+    
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C++中struct和class的区别， C语言struct和C++ struct的区别？</title>
+    <link href="https://blog.oyyko.com/2022/04/18/chaoshu_Cpp_struct_class/"/>
+    <id>https://blog.oyyko.com/2022/04/18/chaoshu_Cpp_struct_class/</id>
+    <published>2022-04-17T16:00:00.000Z</published>
+    <updated>2022-04-18T02:52:28.128Z</updated>
+    
+    <content type="html"><![CDATA[<p>C++中struct和class的区别， C语言struct和C++ struct的区别？ <span id="more"></span></p><h1 id="c中struct和class的区别-c语言struct和c-struct的区别">C++中struct和class的区别， C语言struct和C++ struct的区别？</h1><h2 id="c中struct和class的区别">C++中struct和class的区别</h2><p>1</p><p>class用在模版里面可以替换typename 例如</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">A</span>&gt;</span></span><br><span class="line"><span class="function">A <span class="title">add</span><span class="params">(A x, A y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x + y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="built_in">add</span>(<span class="string">&quot;aaa&quot;</span>s, <span class="string">&quot;bbb&quot;</span>s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>而struct不可以用作这个用途。</p><p>2</p><p>class默认访问权限是private，而struct是public</p><p>3</p><p>作为父类的时候，struct默认是public继承，class默认是private继承</p><p>其他方面没有区别。但一般把struct用于POD类型组成的结构，而class用于较复杂的类型。</p><h2 id="c语言struct和c-struct的区别">C语言struct和C++ struct的区别？</h2><p>1</p><p>C语言里面，使用struct的时候需要加关键字，而C++不用。</p><p>例如树的结点为Node</p><p>C语言里面声明一个节点需要： <code>struct Node root;</code></p><p>C++里面只需要:<code>Node root;</code></p><p>2</p><p>前面说到C++的struct实际上和class是差不多的。因此面向对象的一些特点都是C++的struct比C语言多的特性。例如可以继承，可以有成员函数（C语言里面需要用函数指针作为成员变量才行），可以直接初始化成员变量，可以拥有访问控制权限public，private，protected，可以有静态成员函数和静态成员变量，拥有构造函数和析构函数。</p><p>并且<code>sizeof(一个空结构体)</code></p><p>在C语言里面是0</p><p>在C++里面是1 因为C++规定空对象的大小也至少是1</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;C++中struct和class的区别， C语言struct和C++ struct的区别？</summary>
+    
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>大数据题目</title>
+    <link href="https://blog.oyyko.com/2022/04/18/chaoshu_bigdata_question/"/>
+    <id>https://blog.oyyko.com/2022/04/18/chaoshu_bigdata_question/</id>
+    <published>2022-04-17T16:00:00.000Z</published>
+    <updated>2022-04-18T02:51:01.565Z</updated>
+    
+    <content type="html"><![CDATA[<p>大数据题目 <span id="more"></span></p><ul><li>统计大量访问日志(分几百 M 和 几百 G 的场景);得出访问次数最多的前 K 个人 (单台机器实现)</li><li>10G文件，1G内存，找出最大的K个数，找出重复数</li></ul><p>假设人由身份ID组成。问题可以抽象为：有大量的ID信息，例如3，5，3，3，7，。。。 问其中出现最多的ID 是哪一个</p><p>我们可以用hash的方式把大量信息分散到不同的小文件里面。之后再用小根堆的方式来找出每一个文件里面的最大的K个数 之后再合并到一起即可 如果有多台机器那么可以并行执行。</p><p>找出重复数字可以使用位图法 假设一个数字对应一个bit位 那么我们建立位图 对于新来的数字看它的那个位是不是1 如果不是 就设为1 如果是 说明这个数字重复出现过</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;大数据题目</summary>
+    
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>C++ CONST</title>
+    <link href="https://blog.oyyko.com/2022/04/18/chaoshu_cpp_const/"/>
+    <id>https://blog.oyyko.com/2022/04/18/chaoshu_cpp_const/</id>
+    <published>2022-04-17T16:00:00.000Z</published>
+    <updated>2022-04-18T02:52:18.159Z</updated>
+    
+    <content type="html"><![CDATA[<p>C++ CONST <span id="more"></span></p><p><code>const_iterator</code>在STL中等价于指向<code>const</code>的指针。被指向的数值是不能被修改的。标准的做法是应该使用<code>const</code>的迭代器的地方，也就是尽可能的在没有必要修改指针所指向的内容的地方使用<code>const_iterator</code></p><p>对于能加上const修饰的都加上const修饰，可以防止它们被无意间或者在疏忽的时候更改。</p><p>可以使用<code>.cbegin(),.cend()</code>来获取只读版本的迭代器</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;C++ CONST</summary>
+    
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>IO多路复用</title>
+    <link href="https://blog.oyyko.com/2022/04/18/chaoshu_epoll/"/>
+    <id>https://blog.oyyko.com/2022/04/18/chaoshu_epoll/</id>
+    <published>2022-04-17T16:00:00.000Z</published>
+    <updated>2022-04-18T02:52:59.742Z</updated>
+    
+    <content type="html"><![CDATA[<p>IO多路复用 <span id="more"></span></p><p>通常IO操作都是<strong>阻塞I/O</strong>的，也就是说当你调用read时，如果没有数据收到，那么线程或者进程就会被挂起，直到收到数据。</p><p>这样，当服务器需要处理1000个连接的的时候，而且只有很少连接忙碌的，那么会需要1000个线程或进程来处理1000个连接，而1000个线程大部分是被阻塞起来的。由于CPU的核数或超线程数一般都不大，比如4,8,16,32,64,128，比如4个核要跑1000个线程，那么每个线程的时间槽非常短，而线程切换非常频繁。这样是有问题的：</p><ol type="1"><li>线程是有内存开销的，1个线程可能需要512K（或2M）存放栈，那么1000个线程就要512M（或2G）内存。</li><li>线程的切换，或者说上下文切换是有CPU开销的，当大量时间花在上下文切换的时候，分配给真正的操作的CPU就要少很多。</li></ol><p>那么，我们就要引入<strong>非阻塞I/O</strong>的概念，非阻塞IO很简单，通过fcntl（POSIX）或ioctl（Unix）设为非阻塞模式，这时，当你调用read时，如果有数据收到，就返回数据，如果没有数据收到，就立刻返回一个错误，如EWOULDBLOCK。这样是不会阻塞线程了，但是你还是要不断的轮询来读取或写入。</p><p>于是，我们需要引入<strong>IO多路复用</strong>的概念。多路复用是指使用一个线程来检查多个文件描述符（Socket）的就绪状态，比如调用select和poll函数，传入多个文件描述符，如果有一个文件描述符就绪，则返回，否则阻塞直到超时。得到就绪状态后进行真正的操作可以在同一个线程里执行，也可以启动线程执行（比如使用线程池）。</p><p>这样在处理1000个连接时，只需要1个线程监控就绪状态，对就绪的每个连接开一个线程处理就可以了，这样需要的线程数大大减少，减少了内存开销和上下文切换的CPU开销。</p><p>当服务器与客户端 TCP 完成连接后，通过 <code>pthread_create()</code>函数创建线程，然后将「已连接 Socket」的文件描述符传递给线程函数，接着在线程里和客户端进行通信，从而达到并发处理的目的。</p><p>如果每来一个连接就创建一个线程，线程运行完后，还得操作系统还得销毁线程，虽说线程切换的上写文开销不大，但是如果频繁创建和销毁线程，系统开销也是不小的。</p><p>那么，我们可以使用<strong>线程池</strong>的方式来避免线程的频繁创建和销毁，所谓的线程池，就是提前创建若干个线程，这样当由新连接建立时，将这个已连接的 Socket 放入到一个队列里，然后线程池里的线程负责从队列中取出已连接 Socket 进程处理.</p><p>但这样还是不能支持大规模的连接数。</p><p>既然为每个请求分配一个进程/线程的方式不合适，那有没有可能只使用一个进程来维护多个 Socket 呢？答案是有的，那就是 <strong>I/O 多路复用</strong>技术。</p><p>一个进程虽然任一时刻只能处理一个请求，但是处理每个请求的事件时，耗时控制在 1 毫秒以内，这样 1 秒内就可以处理上千个请求，把时间拉长来看，多个请求复用了一个进程，这就是多路复用，这种思想很类似一个 CPU 并发多个进程，所以也叫做时分多路复用。</p><p>我们熟悉的 select/poll/epoll 内核提供给用户态的多路复用系统调用，<strong>进程可以通过一个系统调用函数从内核中获取多个事件</strong>。</p><p>select/poll/epoll 是如何获取网络事件的呢？在获取事件时，先把所有连接（文件描述符）传给内核，再由内核返回产生了事件的连接，然后在用户态中再处理这些连接对应的请求即可</p><p>select 实现多路复用的方式是，将已连接的 Socket 都放到一个<strong>文件描述符集合</strong>，然后调用 select 函数将文件描述符集合<strong>拷贝</strong>到内核里，让内核来检查是否有网络事件产生，检查的方式很粗暴，就是通过<strong>遍历</strong>文件描述符集合的方式，当检查到有事件产生后，将此 Socket 标记为可读或可写， 接着再把整个文件描述符集合<strong>拷贝</strong>回用户态里，然后用户态还需要再通过<strong>遍历</strong>的方法找到可读或可写的 Socket，然后再对其处理。</p><p>所以，对于 select 这种方式，需要进行 <strong>2 次「遍历」文件描述符集合</strong>，一次是在内核态里，一个次是在用户态里 ，而且还会发生 <strong>2 次「拷贝」文件描述符集合</strong>，先从用户空间传入内核空间，由内核修改后，再传出到用户空间中。</p><p>select 使用固定长度的 BitsMap，表示文件描述符集合，而且所支持的文件描述符的个数是有限制的，在 Linux 系统中，由内核中的 FD_SETSIZE 限制， 默认最大值为 <code>1024</code>，只能监听 0~1023 的文件描述符。</p><p>poll 不再用 BitsMap 来存储所关注的文件描述符，取而代之用动态数组，以链表形式来组织，突破了 select 的文件描述符个数限制，当然还会受到系统文件描述符限制。</p><p>但是 poll 和 select 并没有太大的本质区别，<strong>都是使用「线性结构」存储进程关注的 Socket 集合，因此都需要遍历文件描述符集合来找到可读或可写的 Socket，时间复杂度为 O(n)，而且也需要在用户态与内核态之间拷贝文件描述符集合</strong>，这种方式随着并发数上来，性能的损耗会呈指数级增长。</p><p>epoll 通过两个方面，很好解决了 select/poll 的问题。</p><p><em>第一点</em>，epoll 在内核里使用<strong>红黑树来跟踪进程所有待检测的文件描述字</strong>，把需要监控的 socket 通过 <code>epoll_ctl()</code> 函数加入内核中的红黑树里，红黑树是个高效的数据结构，增删查一般时间复杂度是 <code>O(logn)</code>，通过对这棵黑红树进行操作，这样就不需要像 select/poll 每次操作时都传入整个 socket 集合，只需要传入一个待检测的 socket，减少了内核和用户空间大量的数据拷贝和内存分配。</p><p><em>第二点</em>， epoll 使用事件驱动的机制，内核里<strong>维护了一个链表来记录就绪事件</strong>，当某个 socket 有事件发生时，通过回调函数内核会将其加入到这个就绪事件列表中，当用户调用 <code>epoll_wait()</code> 函数时，只会返回有事件发生的文件描述符的个数，不需要像 select/poll 那样轮询扫描整个 socket 集合，大大提高了检测的效率。</p><p>epoll 支持两种事件触发模式，分别是<strong>边缘触发（*edge-triggered，ET*）和水平触发（*level-triggered，LT*）</strong>。</p><ul><li>使用边缘触发模式时，当被监控的 Socket 描述符上有可读事件发生时，<strong>服务器端只会从 epoll_wait 中苏醒一次</strong>，即使进程没有调用 read 函数从内核读取数据，也依然只苏醒一次，因此我们程序要保证一次性将内核缓冲区的数据读取完；</li><li>使用水平触发模式时，当被监控的 Socket 上有可读事件发生时，<strong>服务器端不断地从 epoll_wait 中苏醒，直到内核缓冲区数据被 read 函数读完才结束</strong>，目的是告诉我们有数据需要读取；</li></ul><p><strong>边缘触发模式一般和非阻塞 I/O 搭配使用</strong>，程序会一直执行 I/O 操作，直到系统调用（如 <code>read</code> 和 <code>write</code>）返回错误，错误类型为 <code>EAGAIN</code> 或 <code>EWOULDBLOCK</code></p><p>select/poll 只有水平触发模式，epoll 默认的触发模式是水平触发，但是可以根据应用场景设置为边缘触发模式。</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;IO多路复用</summary>
+    
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何人为避免out-of-order execution</title>
+    <link href="https://blog.oyyko.com/2022/04/18/chaoshu_fence/"/>
+    <id>https://blog.oyyko.com/2022/04/18/chaoshu_fence/</id>
+    <published>2022-04-17T16:00:00.000Z</published>
+    <updated>2022-04-18T02:53:08.231Z</updated>
+    
+    <content type="html"><![CDATA[<p>如何人为避免out-of-order execution <span id="more"></span></p><ul><li>如何人为避免out-of-order execution</li></ul><p>加入fence，即内存屏障</p><ul><li>完全内存屏障(full memory barrier)保障了早于屏障的内存读写操作的结果提交到内存之后，再执行晚于屏障的读写操作。</li><li>内存读屏障(read memory barrier)仅确保了内存读操作；</li><li>内存写屏障(write memory barrier)仅保证了内存写操作。</li></ul><p>通过加入内存屏障，保证了一定程度上避免乱序执行。</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;如何人为避免out-of-order execution</summary>
+    
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>建立一个HTTP的过程</title>
+    <link href="https://blog.oyyko.com/2022/04/18/chaoshu_http/"/>
+    <id>https://blog.oyyko.com/2022/04/18/chaoshu_http/</id>
+    <published>2022-04-17T16:00:00.000Z</published>
+    <updated>2022-04-18T02:53:27.699Z</updated>
+    
+    <content type="html"><![CDATA[<p>建立一个HTTP的过程 <span id="more"></span></p><h2 id="讲一下建立一个http的过程">讲一下建立一个HTTP的过程</h2><p>首先进行域名解析：通过DNS协议把域名转换为IP地址</p><p>之后TCP用三次握手来建立连接。</p><p>之后即可通过TCP发送HTTP请求</p><p>浏览器向服务器发送HTTP请求：</p><p><code>GET/example/hello.html HTTP/1.1</code></p><p>浏览器发送请求的头信息：例如USER-AGENT 最后发送一个空请求代表请求头信息发送完毕</p><p>服务器应答：首先返回协议版本号和状态码：<code>HTTP/1.1 200 OK</code></p><p>再发送应答的头信息</p><p>最后发送数据</p><p>HTTP1.0中，发送完毕之后即关闭TCP连接。</p><p>HTTP1.1中 由keep-alive参数控制</p><p>HTTP1.0 短连接 每次传输都要建立TCP连接并关闭。多次传输则需要多次建立和关闭</p><p>HTTP1.1 支持长连接和请求的流水线处理，在一个TCP连接上可以传送多个HTTP请求和响应</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;建立一个HTTP的过程</summary>
+    
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>对称性加密跟非对称性加密的比较</title>
+    <link href="https://blog.oyyko.com/2022/04/18/chaoshu_jiami/"/>
+    <id>https://blog.oyyko.com/2022/04/18/chaoshu_jiami/</id>
+    <published>2022-04-17T16:00:00.000Z</published>
+    <updated>2022-04-18T02:53:35.491Z</updated>
+    
+    <content type="html"><![CDATA[<p>对称性加密跟非对称性加密的比较 <span id="more"></span></p><h3 id="对称性加密跟非对称性加密的比较">对称性加密跟非对称性加密的比较</h3><p>在对称加密算法中，加密和解密使用的是同一把钥匙，即：使用相同的密匙对同一密码进行加密和解密</p><p>非对称加密有两个钥匙，及公钥（Public Key）和私钥（Private Key）。公钥和私钥是成对的存在，如果对原文使用公钥加密，则只能使用对应的私钥才能解密；因为加密和解密使用的不是同一把密钥，所以这种算法称之为非对称加密算法</p><p>非对称加密算法的密匙是通过一系列算法获取到的一长串随机数，通常随机数的长度越长，加密信息越安全。通过私钥经过一系列算法是可以推导出公钥的，也就是说，公钥是基于私钥而存在的。但是无法通过公钥反向推倒出私钥，这个过程是单向的</p><p><strong>对称加密</strong>：</p><p>优点：算法简单，加密解密容易，效率高，执行快。</p><p>缺点：相对来说不算特别安全，只有一把钥匙，密文如果被拦截，且密钥也被劫持，那么，信息很容易被破译。</p><p><strong>非对称加密</strong>：</p><p>优点：安全，即使密文被拦截、公钥被获取，但是无法获取到私钥，也就无法破译密文。作为接收方，务必要保管好自己的密钥。</p><p>缺点：加密算法及其复杂，安全性依赖算法与密钥，而且加密和解密效率很低。</p><p>对称加密的一大缺点是密钥的管理与分配，换句话说，如何把密钥发送到需要解密你的消息的人的手里是一个问题。在发送密钥的过程中，密钥有很大的风险会被黑客们拦截。现实中通常的做法是将对称加密的密钥进行非对称加密，然后传送给需要它的人。</p><p>虽然非对称加密很安全，但是和对称加密比起来，它非常的慢，所以我们还是要用对称加密来传送消息，但对称加密所使用的密钥我们可以通过非对称加密的方式发送出去。</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;对称性加密跟非对称性加密的比较</summary>
+    
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>LINUX IO</title>
+    <link href="https://blog.oyyko.com/2022/04/18/chaoshu_linux_io/"/>
+    <id>https://blog.oyyko.com/2022/04/18/chaoshu_linux_io/</id>
+    <published>2022-04-17T16:00:00.000Z</published>
+    <updated>2022-04-18T02:53:49.184Z</updated>
+    
+    <content type="html"><![CDATA[<p>LINUX IO <span id="more"></span></p><p>Linux 提供了轮询、I/O 中断以及 DMA 传输这 3 种磁盘与主存之间的数据传输机制</p><ul><li>轮询方式是基于死循环对 I/O 端口进行不断检测</li><li>I/O 中断方式是指当数据到达时，磁盘主动向 CPU 发起中断请求，由 CPU 自身负责数据的传输过程</li><li>DMA 传输则在 I/O 中断的基础上引入了 DMA 磁盘控制器，由 DMA 磁盘控制器负责数据的传输，降低了 I/O 中断操作对 CPU 资源的大量消耗</li></ul><h3 id="io中断">IO中断</h3><p>在 DMA 技术出现之前，应用程序与磁盘之间的 I/O 操作都是通过 CPU 的中断完成的</p><figure><img src="https://edgar615.github.io/assets/images/posts/linux-io/linux-io-6.png" alt="img" /><figcaption aria-hidden="true">img</figcaption></figure><p>每次用户进程读取磁盘数据时，都需要 CPU 中断，然后发起 I/O 请求等待数据读取和拷贝完成，每次的 I/O 中断都导致 CPU 的上下文切换：</p><ul><li>用户进程向 CPU 发起 read 系统调用读取数据，由用户态切换为内核态，然后一直阻塞等待数据的返回</li><li>CPU 在接收到指令以后对磁盘发起 I/O 请求，将磁盘数据先放入磁盘控制器缓冲区</li><li>数据准备完成以后，磁盘向 CPU 发起 I/O 中断</li><li>CPU 收到 I/O 中断以后将磁盘缓冲区中的数据拷贝到内核缓冲区，然后再从内核缓冲区拷贝到用户缓冲区</li><li>用户进程由内核态切换回用户态，解除阻塞状态，然后等待 CPU 的下一个执行时间钟。</li></ul><p>计算机执行程序时，会有优先级的需求。比如，当计算机收到断电信号时（电容可以保存少许电量，供CPU运行很短的一小段时间），它应立即去保存数据，保存数据的程序具有较高的优先级。</p><p>一般而言，由硬件产生的信号需要cpu立马做出回应（不然数据可能就丢失），所以它的优先级很高。cpu理应中断掉正在执行的程序，去做出响应；当cpu完成对硬件的响应后，再重新执行用户程序。</p><p>以键盘为例，当用户按下键盘某个按键时，键盘会给cpu的中断引脚发出一个高电平。cpu能够捕获这个信号，然后执行键盘中断程序。</p><p>以网卡为例，网卡会把接收到的数据写入内存。<strong>当网卡把数据写入到内存后，</strong>网卡向cpu发出一个中断信号，操作系统便能得知有新数据到来<strong>，再通过网卡</strong>中断程序去处理数据。</p><h3 id="dma">DMA</h3><p>DMA 的全称叫直接内存存取（Direct Memory Access），是一种允许外围设备（硬件子系统）直接访问系统主内存的机制。也就是说，基于 DMA 访问方式，系统主内存于硬盘或网卡之间的数据传输可以绕开 CPU 的全程调度。目前大多数的硬件设备，包括磁盘控制器、网卡、显卡以及声卡等都支持 DMA 技术。</p><p>整个数据传输操作在一个 DMA 控制器的控制下进行的。CPU 除了在数据传输开始和结束时做一点处理外（开始和结束时候要做中断处理），在传输过程中 CPU 可以继续进行其他的工作。这样在大部分时间里，CPU 计算和 I/O 操作都处于并行操作，使整个计算机系统的效率大大提高。</p><figure><img src="https://edgar615.github.io/assets/images/posts/linux-io/linux-io-7.png" alt="img" /><figcaption aria-hidden="true">img</figcaption></figure><p>有了 DMA 磁盘控制器接管数据读写请求以后，CPU 从繁重的 I/O 操作中解脱，数据读取操作的流程如下：</p><ul><li>用户进程向 CPU 发起 read 系统调用读取数据，由用户态切换为内核态，然后一直阻塞等待数据的返回</li><li>CPU 在接收到指令以后对 DMA 磁盘控制器发起调度指令</li><li>DMA 磁盘控制器对磁盘发起 I/O 请求，将磁盘数据先放入磁盘控制器缓冲区，CPU 全程不参与此过程</li><li>数据读取完成后，DMA 磁盘控制器会接受到磁盘的通知，将数据从磁盘控制器缓冲区拷贝到内核缓冲区</li><li>DMA 磁盘控制器向 CPU 发出数据读完的信号，由 CPU 负责将数据从内核缓冲区拷贝到用户缓冲区</li><li>用户进程由内核态切换回用户态，解除阻塞状态，然后等待 CPU 的下一个执行时间钟。</li></ul><h2 id="缓存-io-buffered-io">缓存 I/O (Buffered I/O)</h2><p>缓存 I/O 又被称作标准 I/O，大多数文件系统的默认 I/O 操作都是缓存 I/O。在 Linux 的缓存 I/O 机制中，操作系统会将 I/O 的数据缓存在文件系统的页缓存（ page cache ）中，也就是说，<strong>数据会先被拷贝到操作系统内核的缓冲区中，然后才会从操作系统内核的缓冲区拷贝到应用程序的地址空间</strong>。写的过程就是数据流反方向。</p><figure><img src="https://edgar615.github.io/assets/images/posts/linux-io/linux-io-8.png" alt="img" /><figcaption aria-hidden="true">img</figcaption></figure><p>对于读操作：当应用程序要去读取某块数据的时候，如果这块数据已经在页缓存中，那直接返回，而不需要经过硬盘的读取操作了。如果这块数据不在页缓存中，就需要从硬盘中读取数据到页缓存。</p><p>对于写操作：应用程序会将数据先写到页缓存中，数据是否会被立即写到磁盘，这取决于所采用的写操作机制。</p><ul><li>同步写机制（ synchronous writes ）：数据会立即被写回到磁盘上，应用程序会一直等到数据被写完为止；</li><li>延迟写机制（ deferred writes ）：应用程序不需要等到数据全部被写回到磁盘，数据只要被写到页缓存中去就可以了。在延迟写机制的情况下，操作系统会定期地将放在页缓存中的数据刷到磁盘上。与异步写机制（ asynchronous writes ）不同的是，延迟写机制在数据完全写到磁盘上的时候不会通知应用程序，而异步写机制在数据完全写到磁盘上的时候是会返回给应用程序的。所以延迟写机制本身是存在数据丢失的风险的，而异步写机制则不会有这方面的担心。（写接口返回的时候，页缓存的数据还没刷到硬盘，正好断电。）</li></ul><p>缓存 I/O 有以下这些优点：</p><ul><li>缓存 I/O 使用了操作系统内核缓冲区，在一定程度上分离了应用程序空间和实际的物理设备。</li><li>缓存 I/O 可以减少读盘的次数，从而提高性能。</li></ul><p>在缓存 I/O 机制中，DMA 方式可以将数据直接从磁盘读到页缓存中，或者将数据从页缓存直接写回到磁盘上，而不能直接在应用程序地址空间和磁盘之间进行数据传输，这样的话，数据在传输过程中需要在应用程序地址空间和页缓存之间进行多次数据拷贝操作，这些数据拷贝操作所带来的 CPU 以及内存开销是非常大的。</p><p>假如一个应用需要从某个磁盘文件中读取内容通过网络发出去如下图所示：整个过程涉及 2 次 CPU 拷贝、2 次 DMA 拷贝，总共 4 次拷贝，以及 4 次上下文切换。</p><figure><img src="https://edgar615.github.io/assets/images/posts/linux-io/linux-io-9.png" alt="img" /><figcaption aria-hidden="true">img</figcaption></figure><ul><li>用户进程通过 read() 函数向内核（kernel）发起系统调用，上下文从用户态（user space）切换为内核态（kernel space）。</li><li>CPU 利用 DMA 控制器将数据从主存或硬盘拷贝到内核空间（kernel space）的读缓冲区（read buffer）。</li><li>CPU 将读缓冲区（read buffer）中的数据拷贝到用户空间（user space）的用户缓冲区（user buffer）。</li><li>上下文从内核态（kernel space）切换回用户态（user space），read 调用执行返回。</li><li>用户进程通过 write() 函数向内核（kernel）发起系统调用，上下文从用户态（user space）切换为内核态（kernel space）。</li><li>CPU 将用户缓冲区（user buffer）中的数据拷贝到内核空间（kernel space）的网络缓冲区（socket buffer）。</li><li>CPU 利用 DMA 控制器将数据从网络缓冲区（socket buffer）拷贝到网卡进行数据传输。</li><li>上下文从内核态（kernel space）切换回用户态（user space），write 系统调用执行返回。</li></ul><p>对于某些特殊的应用程序来说，避开操作系统内核缓冲区而直接在应用程序地址空间和磁盘之间传输数据会比使用操作系统内核缓冲区获取更好的性能。</p><h2 id="直接io">直接IO</h2><p>凡是通过直接I/O方式进行数据传输，数据直接从用户态地址空间写入到磁盘中，直接跳过内核缓冲区。对于一些应用程序，例如：数据库。他们更倾向于自己的缓存机制，这样可以提供更好的缓冲机制提高数据库的读写性能。</p><figure><img src="https://edgar615.github.io/assets/images/posts/linux-io/linux-io-10.png" alt="img" /><figcaption aria-hidden="true">img</figcaption></figure><ul><li>优点：通过减少操作系统内核缓冲区和应用程序地址空间的数据拷贝次数，降低了对文件读取和写入时所带来的 CPU 的使用以及内存带宽的占用。这对于某些特殊的应用程序，不失为一种好的选择。如果要传输的数据量很大，使用直接 I/O 的方式进行数据传输，而不需要操作系统内核地址空间拷贝数据操作的参与，这将会大大提高性能。</li><li>缺点：直接IO的开销也很大，应用程序没有控制好读写，将会导致磁盘读写的效率低下。磁盘的读写是通过磁头的切换到不同的磁道上读取和写入数据，如果需要写入数据在磁盘位置相隔比较远，就会导致寻道的时间大大增加，写入读取的效率大大降低。解决这个问题需要和异步 I/O 结合使用。</li></ul><p>如下图所示的数据读写流程，整个过程不涉及CPU 拷贝和上下文切换。</p><figure><img src="https://edgar615.github.io/assets/images/posts/linux-io/linux-io-11.png" alt="img" /><figcaption aria-hidden="true">img</figcaption></figure><h2 id="内存映射mmp">内存映射mmp</h2><p>在Linux中内存区域（ memory region ）是可以跟一个普通的文件或者块设备文件的某一个部分关联起来的，若进程要访问内存页中某个字节的数据，操作系统就会将访问该内存区域的操作转换为相应的访问文件的某个字节的操作。Linux 中提供了系统调用 mmap() 来实现这种文件访问方式。与标准的访问文件的方式相比，内存映射方式可以减少标准访问文件方式中 read() 系统调用所带来的数据拷贝操作，即减少数据在用户地址空间和操作系统内核地址空间之间的拷贝操作。映射通常适用于较大范围，对于相同长度的数据来讲，映射所带来的开销远远低于 CPU 拷贝所带来的开销。当大量数据需要传输的时候，采用内存映射方式去访问文件会获得比较好的效率。</p><blockquote><p>在内存映射的过程中，并没有实际的数据拷贝，文件没有被载入内存，只是逻辑上被放入了内存。进程最终是怎么直接通过内存操作访问到硬盘上的文件这个问题我没有深入学习</p></blockquote><blockquote><p>内存映射，简而言之就是将用户空间的一段内存区域映射到内核空间，映射成功后，用户对这段内存区域的修改可以直接反映到内核空间，同样，内核空间对这段区域的修改也直接反映用户空间。那么对于内核空间&lt;—-&gt;用户空间两者之间需要大量数据传输等操作的话效率是非常高的。</p></blockquote><p>下图所示的数据读写流程，整个过程会发生 4 次上下文切换，1 次 CPU 拷贝和 2 次 DMA 拷贝。</p><figure><img src="https://edgar615.github.io/assets/images/posts/linux-io/linux-io-12.png" alt="img" /><figcaption aria-hidden="true">img</figcaption></figure><ul><li>用户进程通过 mmap() 函数向内核（kernel）发起系统调用，上下文从用户态（user space）切换为内核态（kernel space）。</li><li>将用户进程的内核空间的读缓冲区（read buffer）与用户空间的缓存区（user buffer）进行内存地址映射。</li><li>CPU 利用 DMA 控制器将数据从主存或硬盘拷贝到内核空间（kernel space）的读缓冲区（read buffer）。</li><li>上下文从内核态（kernel space）切换回用户态（user space），mmap 系统调用执行返回。</li><li>用户进程通过 write() 函数向内核（kernel）发起系统调用，上下文从用户态（user space）切换为内核态（kernel space）。</li><li>CPU 将读缓冲区（read buffer）中的数据拷贝到网络缓冲区（socket buffer）。</li><li>CPU 利用 DMA 控制器将数据从网络缓冲区（socket buffer）拷贝到网卡进行数据传输。</li><li>上下文从内核态（kernel space）切换回用户态（user space），write 系统调用执行返回。</li></ul><p>从硬盘上将文件读入内存，都要经过文件系统进行数据拷贝，并且数据拷贝操作是由文件系统和硬件驱动实现的，理论上来说，拷贝数据的效率是一样的。但是通过内存映射的方法访问硬盘上的文件，效率要比read和write系统调用高：</p><ul><li>read/write是系统调用，read()首先将文件内容从硬盘拷贝到内核空间的一个缓冲区，然后再将这些数据拷贝到用户空间，在这个过程中，实际上完成了 两次数据拷贝</li><li>mmap()也是系统调用，mmap()中没有进行数据拷贝，真正的数据拷贝是在缺页中断处理时进行的，由于mmap()将文件直接映射到用户空间，所以中断处理函数根据这个映射关系，直接将文件从硬盘拷贝到用户空间，只进行了 一次数据拷贝 。</li></ul><p>mmap 主要的用处是提高 I/O 性能，特别是针对大文件。对于小文件，内存映射文件反而会导致碎片空间的浪费。因为内存映射总是要对齐页边界，最小单位是 4 KB，一个 5 KB 的文件将会映射占用 8 KB 内存，也就会浪费 3 KB 内存。</p><p>mmap 隐藏着一个陷阱，当 mmap 一个文件时，如果这个文件被另一个进程所截获，那么 write 系统调用会因为访问非法地址被 SIGBUS 信号终止，SIGBUS 默认会杀死进程并产生一个 coredump，如果服务器被这样终止了，那损失就可能不小了。</p><p>解决这个问题通常使用文件的租借锁：</p><p>首先为文件申请一个租借锁，当其他进程想要截断这个文件时，内核会发送一个实时的 RT_SIGNAL_LEASE 信号，告诉当前进程有进程在试图破坏文件，这样 write 在被 SIGBUS 杀死之前，会被中断，返回已经写入的字节数，并设置 errno 为 success。</p><p>通常的做法是在 mmap 之前加锁，操作完之后解锁</p><h2 id="sendfile">Sendfile</h2><p>Sendfile 系统调用在 Linux 内核版本 2.1 中被引入，目的是简化通过网络在两个通道之间进行的数据传输过程。Sendfile 系统调用的引入，不仅减少了 CPU 拷贝的次数，还减少了上下文切换的次数。与 mmap 内存映射方式不同的是， Sendfile 调用中 I/O 数据对用户空间是完全不可见的。也就是说，这是一次完全意义上的数据传输过程。</p><figure><img src="https://edgar615.github.io/assets/images/posts/linux-io/linux-io-13.png" alt="img" /><figcaption aria-hidden="true">img</figcaption></figure><ul><li>用户进程通过 sendfile() 函数向内核（kernel）发起系统调用，上下文从用户态（user space）切换为内核态（kernel space）。</li><li>CPU 利用 DMA 控制器将数据从主存或硬盘拷贝到内核空间（kernel space）的读缓冲区（read buffer）。</li><li>CPU 将读缓冲区（read buffer）中的数据拷贝到的网络缓冲区（socket buffer）。</li><li>CPU 利用 DMA 控制器将数据从网络缓冲区（socket buffer）拷贝到网卡进行数据传输。</li><li>上下文从内核态（kernel space）切换回用户态（user space），Sendfile 系统调用执行返回。</li></ul><p>Sendfile 存在的问题是用户程序不能对数据进行修改，而只是单纯地完成了一次数据传输过程。因此只能适用于那些不需要用户态处理的应用程序.</p><h2 id="sendfiledma-gather-copy">Sendfile+DMA gather copy</h2><p>Linux 2.4 版本的内核对 Sendfile 系统调用进行修改，为 DMA 拷贝引入了 gather 操作。它将内核空间（kernel space）的读缓冲区（read buffer）中对应的数据描述信息（内存地址、地址偏移量）记录到相应的网络缓冲区（ socket buffer）中，由 DMA 根据内存地址、地址偏移量将数据批量地从读缓冲区（read buffer）拷贝到网卡设备中。这样就省去了内核空间中仅剩的 1 次 CPU 拷贝操作</p><figure><img src="https://edgar615.github.io/assets/images/posts/linux-io/linux-io-14.png" alt="img" /><figcaption aria-hidden="true">img</figcaption></figure><ul><li>用户进程通过 sendfile() 函数向内核（kernel）发起系统调用，上下文从用户态（user space）切换为内核态（kernel space）。</li><li>CPU 利用 DMA 控制器将数据从主存或硬盘拷贝到内核空间（kernel space）的读缓冲区（read buffer）。</li><li>CPU 把读缓冲区（read buffer）的文件描述符（file descriptor）和数据长度拷贝到网络缓冲区（socket buffer）。</li><li>基于已拷贝的文件描述符（file descriptor）和数据长度，CPU 利用 DMA 控制器的 gather/scatter 操作直接批量地将数据从内核的读缓冲区（read buffer）拷贝到网卡进行数据传输。</li><li>上下文从内核态（kernel space）切换回用户态（user space），Sendfile 系统调用执行返回。</li></ul><p>Sendfile+DMA gather copy 拷贝方式同样存在用户程序不能对数据进行修改的问题，而且本身需要硬件的支持，它只适用于将数据从文件拷贝到 socket 套接字上的传输过程。</p><h2 id="splice">Splice</h2><p>Sendfile 只适用于将数据从文件拷贝到 socket 套接字上，同时需要硬件的支持，这也限定了它的使用范围。Linux 在 2.6.17 版本引入 Splice 系统调用，不仅不需要硬件支持，还实现了两个文件描述符之间的数据零拷贝。</p><p>下图所示的数据读写流程，整个过程会发生 2 次上下文切换和 2 次 DMA 拷贝。</p><figure><img src="https://edgar615.github.io/assets/images/posts/linux-io/linux-io-15.png" alt="img" /><figcaption aria-hidden="true">img</figcaption></figure><ul><li>用户进程通过 splice() 函数向内核（kernel）发起系统调用，上下文从用户态（user space）切换为内核态（kernel space）。</li><li>CPU 利用 DMA 控制器将数据从主存或硬盘拷贝到内核空间（kernel space）的读缓冲区（read buffer）。</li><li>CPU 在内核空间的读缓冲区（read buffer）和网络缓冲区（socket buffer）之间建立管道（pipeline）。</li><li>CPU 利用 DMA 控制器将数据从网络缓冲区（socket buffer）拷贝到网卡进行数据传输。</li><li>上下文从内核态（kernel space）切换回用户态（user space），Splice 系统调用执行返回。</li></ul><p>Splice 拷贝方式也同样存在用户程序不能对数据进行修改的问题。除此之外，它使用了 Linux 的管道缓冲机制，可以用于任意两个文件描述符中传输数据，但是它的两个文件描述符参数中有一个必须是管道设备。</p><h2 id="写时复制">写时复制</h2><p>在某些情况下，内核缓冲区可能被多个进程所共享，如果某个进程想要这个共享区进行 write 操作，由于 write 不提供任何的锁操作，那么就会对共享区中的数据造成破坏，写时复制的引入就是 Linux 用来保护数据的。</p><p>写时复制指的是当多个进程共享同一块数据时，如果其中一个进程需要对这份数据进行修改，那么就需要将其拷贝到自己的进程地址空间中。</p><p>这样做并不影响其他进程对这块数据的操作，每个进程要修改的时候才会进行拷贝，所以叫写时拷贝。这种方法在某种程度上能够降低系统开销，如果某个进程永远不会对所访问的数据进行更改，那么也就永远不需要拷贝。</p><p>缺陷：需要 MMU 的支持，MMU 需要知道进程地址空间中哪些页面是只读的，当需要往这些页面写数据时，发出一个异常给操作系统内核，内核会分配新的存储空间来供写入的需求。</p><h2 id="缓冲区共享">缓冲区共享</h2><p>缓冲区共享方式完全改写了传统的 I/O 操作，因为传统 I/O 接口都是基于数据拷贝进行的，要避免拷贝就得去掉原先的那套接口并重新改写。所以这种方法是比较全面的零拷贝技术，目前比较成熟的一个方案是在 Solaris 上实现的 fbuf（Fast Buffer，快速缓冲区）。</p><p>fbuf 的思想是每个进程都维护着一个缓冲区池，这个缓冲区池能被同时映射到用户空间（user space）和内核态（kernel space），内核和用户共享这个缓冲区池，这样就避免了一系列的拷贝操作。</p><figure><img src="https://edgar615.github.io/assets/images/posts/linux-io/linux-io-16.png" alt="img" /><figcaption aria-hidden="true">img</figcaption></figure><p>缺陷：缓冲区共享的难度在于管理共享缓冲区池需要应用程序、网络软件以及设备驱动程序之间的紧密合作，而且如何改写 API 目前还处于试验阶段并不成熟。</p><p>参考资料：https://edgar615.github.io/linux-io-read-method.html</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;LINUX IO</summary>
+    
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>LRU 和 LFU 的实现，要非常详细的数据结果和过程结构，尽可能的支持高并发</title>
+    <link href="https://blog.oyyko.com/2022/04/18/chaoshu_lru/"/>
+    <id>https://blog.oyyko.com/2022/04/18/chaoshu_lru/</id>
+    <published>2022-04-17T16:00:00.000Z</published>
+    <updated>2022-04-18T02:53:16.180Z</updated>
+    
+    <content type="html"><![CDATA[<p>LRU 和 LFU 的实现，要非常详细的数据结果和过程结构，尽可能的支持高并发 <span id="more"></span></p><h2 id="lru-和-lfu-的实现要非常详细的数据结果和过程结构尽可能的支持高并发">LRU 和 LFU 的实现，要非常详细的数据结果和过程结构，尽可能的支持高并发</h2><p>LRU(Least recently used)最近最少使用，实际上就是缓存中最久未被使用的项会被优先剔除。</p><p>它的思想是如果一个项很久都没被使用了，那么它应该被剔除缓存。</p><p>为了知道最近最少访问的信息通常 LRU 的实现会采用双链表保存缓存项。因为缓存的数量会动态变化，所以会选择链表。而且会有不少的删除节点操作，为了达到 <code>O(1)</code> 的删除操作所以会用双链表。</p><p>LRU 缓存机制可以通过哈希表辅以双向链表实现，我们用一个哈希表和一个双向链表维护所有在缓存中的键值对。</p><p>双向链表按照被使用的顺序存储了这些键值对，靠近头部的键值对是最近使用的，而靠近尾部的键值对是最久未使用的。</p><p>哈希表即为普通的哈希映射（HashMap），通过缓存数据的键映射到其在双向链表中的位置。</p><p>首先使用哈希表进行定位，找出缓存项在双向链表中的位置，随后将其移动到双向链表的头部，即可在 O(1) 的时间内完成 <code>get</code> 或者 <code>put</code> 操作。</p><p>LFU(Least Frequently Used)最近最不频繁使用，缓存中被使用的次数最少的项会被优先剔除。它认为被用的越少的项越应该移除。</p><p>LFU 克服了 LRU 在大规模遍历时的缺点。但是容易导致旧数据的积累。同时新数据因为使用次数少容易反复被移出缓存导致长期无法积累跟大的使用次数。</p><p>可以使用两个哈希表的方式来实现。</p><p>定义两个哈希表，第一个 freq_table 以频率 freq 为索引，每个索引存放一个双向链表，这个链表里存放所有使用频率为 freq 的缓存，缓存里存放三个信息，分别为键 key，值 value，以及使用频率 freq。第二个 key_table 以键值 key 为索引，每个索引存放对应缓存在 freq_table 中链表里的内存地址，这样我们就能利用两个哈希表来使得两个操作的时间复杂度均为 O(1)。同时需要记录一个当前缓存最少使用的频率 minFreq，这是为了删除操作服务的。</p><p>对于 get(key) 操作，我们能通过索引 key 在 key_table 中找到缓存在 freq_table 中的链表的内存地址，如果不存在直接返回 -1，否则我们能获取到对应缓存的相关信息，这样我们就能知道缓存的键值还有使用频率，直接返回 key 对应的值即可。</p><p>但是我们注意到 get 操作后这个缓存的使用频率加一了，所以我们需要更新缓存在哈希表 freq_table 中的位置。已知这个缓存的键 key，值 value，以及使用频率 freq，那么该缓存应该存放到 freq_table 中 freq + 1 索引下的链表中。所以我们在当前链表中 O(1) 删除该缓存对应的节点，根据情况更新 minFreq 值，然后将其O(1) 插入到 freq + 1 索引下的链表头完成更新。这其中的操作复杂度均为 O(1)。你可能会疑惑更新的时候为什么是插入到链表头，这其实是为了保证缓存在当前链表中从链表头到链表尾的插入时间是有序的，为下面的删除操作服务。</p><p>对于 put(key, value) 操作，我们先通过索引 key在 key_table 中查看是否有对应的缓存，如果有的话，其实操作等价于 get(key) 操作，唯一的区别就是我们需要将当前的缓存里的值更新为 value。如果没有的话，相当于是新加入的缓存，如果缓存已经到达容量，需要先删除最近最少使用的缓存，再进行插入。</p><p>先考虑插入，由于是新插入的，所以缓存的使用频率一定是 1，所以我们将缓存的信息插入到 freq_table 中 1 索引下的列表头即可，同时更新 key_table[key] 的信息，以及更新 minFreq = 1。</p><p>那么剩下的就是删除操作了，由于我们实时维护了 minFreq，所以我们能够知道 freq_table 里目前最少使用频率的索引，同时因为我们保证了链表中从链表头到链表尾的插入时间是有序的，所以 freq_table[minFreq] 的链表中链表尾的节点即为使用频率最小且插入时间最早的节点，我们删除它同时根据情况更新 minFreq ，整个时间复杂度均为 O(1)。</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;LRU 和 LFU 的实现，要非常详细的数据结果和过程结构，尽可能的支持高并发</summary>
+    
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>锁C++实现</title>
+    <link href="https://blog.oyyko.com/2022/04/18/chaoshu_mutex/"/>
+    <id>https://blog.oyyko.com/2022/04/18/chaoshu_mutex/</id>
+    <published>2022-04-17T16:00:00.000Z</published>
+    <updated>2022-04-18T02:55:11.472Z</updated>
+    
+    <content type="html"><![CDATA[<p>锁C++实现 <span id="more"></span></p><h3 id="读写锁c实现">读写锁C++实现</h3><figure><img src="https://pic4.zhimg.com/80/v2-87e63d837a3306724d939091d8b6c45b_1440w.jpg" alt="img" /><figcaption aria-hidden="true">img</figcaption></figure><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">readWriteLock</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    std::mutex readMtx;</span><br><span class="line">    std::mutex writeMtx;</span><br><span class="line">    <span class="keyword">int</span> readCnt; <span class="comment">// 已加读锁个数</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">readWriteLock</span>() : <span class="built_in">readCnt</span>(<span class="number">0</span>) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">readLock</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        readMtx.<span class="built_in">lock</span>();</span><br><span class="line">        <span class="keyword">if</span> (++readCnt == <span class="number">1</span>) &#123;</span><br><span class="line">            writeMtx.<span class="built_in">lock</span>();  <span class="comment">// 存在线程读操作时，写加锁（只加一次）</span></span><br><span class="line">        &#125;</span><br><span class="line">        readMtx.<span class="built_in">unlock</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">readUnlock</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        readMtx.<span class="built_in">lock</span>();</span><br><span class="line">        <span class="keyword">if</span> (--readCnt == <span class="number">0</span>) &#123; <span class="comment">// 没有线程读操作时，释放写锁</span></span><br><span class="line">            writeMtx.<span class="built_in">unlock</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        readMtx.<span class="built_in">unlock</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">writeLock</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        writeMtx.<span class="built_in">lock</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">writeUnlock</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        writeMtx.<span class="built_in">unlock</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><p>从而实现上面描述的功能。</p><h3 id="c-原子操作">C++ 原子操作</h3><p>原子操作即要么全部完成，要么没有执行的操作。</p><p>Intel x86指令集提供了指令前缀lock用于锁定前端串行总线（FSB），保证了指令执行时不会受到其他处理器的干扰。</p><p>使用lock指令前缀后，处理器间对内存的并发访问（读/写）被禁止，从而保证了指令的原子性</p><p>当一个CPU核执行一个线程去访问数据做操作的时候，它会向总线上发送一个LOCK信号，此时其他的线程想要去请求主内存的时候，就会被阻塞，这样该处理器核心就可以独享这个共享内存，而且释放锁后，会调用smp_mb invalide，使其他核心的缓存失效。</p><h4 id="缓存一致性">缓存一致性</h4><p>当某核心对其缓存中的数据进行了操作之后，就通知其他核心放弃储存在它们内部的对应的缓存，或者从主内存中重新读取此数据。缓存一致性主要是通过MESI协议实现</p><h4 id="c-atomic">C++ ATOMIC</h4><p>在c++中，提供了atomic原子库，提供了对一些常用数据类型进行<strong>原子操作</strong>的接口</p><p><strong>std::atomic_flag</strong>是一个原子的布尔类型，可支持两种原子操作： 1.<strong>test_and_set</strong>： 如果atomic_flag对象被设置，则返回true; 如果atomic_flag对象未被设置，则设置之，返回false 2.<strong>clear</strong>： 清除atomic_flag对象</p><p>自旋锁 自旋锁是一种busy-waiting的锁，即进程如果申请不到锁，会一直不断地循环检查锁（状态位）是否可用（会消耗cpu时间），直到获取到这个锁为止。 优点：不会使进程状态发生切换，即进程一直处于active状态，不会进入阻塞状态，获得锁后，不用进行上下文切换，执行速度快。 缺点：没有获得锁前，会一直消耗cpu时间。</p><p>可以用<code>std::atomic_flag</code>实现自旋锁</p><h3 id="futex">FUTEX</h3><p>在Linux下，信号量和线程互斥锁的实现都是通过futex系统调用实现。 Futex 是一个提升效率的机制。在Unix系统中，传统的进程间同步机制都是通过对内核对象操作来完成的，这个内核对象在需要同步的进程中都是可见的，进程间的同步是通过系统调用在内核中完成。这种同步方式因为涉及用户态和内核态的切换，效率比较低。而且只要使用了传统的同步机制，进入临界区时即使没有其他的进程竞争也必须切换到内核态来检查内核同步对象的状态，这种不必要的切换显然带来了大量的浪费。 Futex就是为了解决这个问题而诞生的。Futex是一种用户态和内核态混合的同步机制，使用Futex同步机制，如果用于进程间同步，需要先创建一块共享内存，Futex变量就位于共享区。同时对Futex变量的操作必须是原子的，当进程试图进入临界区或者退出临界区的时候，首先检查共享内存中的Futex变量，如果没有其他的进程也申请使用临界区，则只修改Futex变量而不再执行系统调用。如果同时有其他进程在申请使用临界区，还是需要通过系统调用去执行等待或唤醒操作。这样通过用户态的Futex变量的控制，减少了进程在用户态和内核态之间切换的次数，从而减少了系统同步的开销。</p><p>mutex相关的函数并不是linux kernel实现的，而是glibc库实现的</p><p>锁最后也是由原子操作来实现的</p><p>来源：https://zhiqiang.org/coding/std-mutex-implement.html</p><p>在 C++里，标准库<code>std::mutex</code>只是一个<code>pthread_mutex_t</code>的封装</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">mutex</span> &#123;</span></span><br><span class="line">    <span class="keyword">pthread_mutex_t</span> _M_mutex;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">mutex</span>() &#123; _M_mutex = PTHREAD_MUTEX_INITIALIZER; &#125;</span><br><span class="line">    ~<span class="built_in">mutex</span>() &#123; <span class="built_in">pthread_mutex_destroy</span>(&amp;_M_mutex); &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123; <span class="built_in">pthread_mutex_lock</span>(&amp;_M_mutex); &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">try_lock</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="built_in">pthread_mutex_trylock</span>(&amp;_M_mutex) == <span class="number">0</span>; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123; <span class="built_in">pthread_mutex_unlock</span>(&amp;_M_mutex); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>因此我们需要把眼光挪向<code>pthread</code>库的<code>pthread_mutex_t</code>以及相关函数。</p><p><code>pthread_mutex_t</code>在 x86 下占据 32 个字节，内部布局如下：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> __<span class="title">pthread_mutex_s</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> __lock;                 <span class="comment">//!&lt; mutex状态，0：未占用；1：占用。</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> __count;       <span class="comment">//!&lt; 可重入锁时，持有线程上锁的次数。</span></span><br><span class="line">    <span class="keyword">int</span> __owner;                <span class="comment">//!&lt; 持有线程的线程ID。</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> __nusers;</span><br><span class="line">    <span class="keyword">int</span> __kind;                 <span class="comment">//!&lt; 上锁类型。</span></span><br><span class="line">    <span class="keyword">int</span> __spins;</span><br><span class="line">    <span class="keyword">__pthread_list_t</span> __list;</span><br><span class="line">  &#125; __data;</span><br><span class="line">&#125; <span class="keyword">pthread_mutex_t</span>;</span><br></pre></td></tr></table></figure><p>​ 其中上锁类型有下面几种取值：</p><ul><li>PTHREAD_MUTEX_TIMED_NP ，这是缺省值，也就是普通锁。</li><li>PTHREAD_MUTEX_RECURSIVE_NP ，可重入锁，允许同一个线程对同一个锁成功获得多次，并通过多次 unlock 解锁。</li><li>PTHREAD_MUTEX_ERRORCHECK_NP ，检错锁，如果同一个线程重复请求同一个锁，则返回 EDEADLK ，否则与 PTHREAD_MUTEX_TIMED_NP 类型相同。</li><li>PTHREAD_MUTEX_ADAPTIVE_NP ，自适应锁，自旋锁与普通锁的混合。</li></ul><p>下面我们看最关键的加锁函数<code>pthread_mutex_lock</code>，它的第一个参数是锁对象指针，第二个参数是上面的锁类型。如果是普通锁，它的实现就是：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pthread_mutex_lock(pthread_mutex_t* mutex, int type) &#123;</span><br><span class="line">    if (type == PTHREAD_MUTEX_TIMED_NP) &#123;</span><br><span class="line">        LLL_MUTEX_LOCK (mutex);</span><br><span class="line">    &#125;</span><br><span class="line">    // else ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>下面我们看宏<code>LLL_MUTEX_LOCK</code>的实现：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># define LLL_MUTEX_LOCK(mutex) \</span><br><span class="line">  lll_lock ((mutex)-&gt;__data.__lock, PTHREAD_MUTEX_PSHARED (mutex))</span><br></pre></td></tr></table></figure><p>其中<code>PTHREAD_MUTEX_PSHARED</code>用来区分线程锁还是进程锁。我们可以只关心线程锁，此时第二个参数就是<code>LLL_PRIVATE=0</code>。 而<code>lll_lock</code>的实现如下：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#define lll_lock(futex, private) \</span><br><span class="line">  (void)                                      \</span><br><span class="line">    (&#123; int ignore1, ignore2;                              \</span><br><span class="line">       if (__builtin_constant_p (private) &amp;&amp; (private) == LLL_PRIVATE)        \</span><br><span class="line">     __asm __volatile (&quot;cmpxchgl %1, %2\n\t&quot;                   \</span><br><span class="line">               &quot;jnz _L_lock_%=\n\t&quot;                   \</span><br><span class="line">               &quot;.subsection 1\n\t&quot;                    \</span><br><span class="line">               &quot;.type _L_lock_%=,@function\n&quot;             \</span><br><span class="line">               &quot;_L_lock_%=:\n&quot;                    \</span><br><span class="line">               &quot;1:\tleal %2, %%ecx\n&quot;                 \</span><br><span class="line">               &quot;2:\tcall __lll_lock_wait_private\n&quot;           \</span><br><span class="line">               &quot;3:\tjmp 18f\n&quot;                    \</span><br><span class="line">               &quot;4:\t.size _L_lock_%=, 4b-1b\n\t&quot;              \</span><br><span class="line">               &quot;.previous\n&quot;                      \</span><br><span class="line">               LLL_STUB_UNWIND_INFO_3                 \</span><br><span class="line">               &quot;18:&quot;                          \</span><br><span class="line">               : &quot;=a&quot; (ignore1), &quot;=c&quot; (ignore2), &quot;=m&quot; (futex)     \</span><br><span class="line">               : &quot;0&quot; (0), &quot;1&quot; (1), &quot;m&quot; (futex),           \</span><br><span class="line">                 &quot;i&quot; (MULTIPLE_THREADS_OFFSET)            \</span><br><span class="line">               : &quot;memory&quot;);                       \</span><br></pre></td></tr></table></figure><p>这一段是直接用汇编实现的。其核心指令是 cmpxchgl ，汇编级别的<code>CAS</code>（ compare and swap ）。如果 swap 不成功，则调用<code>__lll_lock_wait_private</code>让调度线程（进入操作系统的同优先级的任务队列末尾）。</p><p>从这里看，<code>std::mutex</code>的并没有加入自旋等待的实现。那么大家说的又是什么呢？其实是<code>pthread_mutex_lock</code>的<code>PTHREAD_MUTEX_ADAPTIVE_NP</code>锁方式。我们来看它的实现：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">if (type == PTHREAD_MUTEX_ADAPTIVE_NP) &#123;</span><br><span class="line">    if (LLL_MUTEX_TRYLOCK (mutex) != 0) &#123;</span><br><span class="line">        int cnt = 0;</span><br><span class="line">        int max_cnt = MIN (MAX_ADAPTIVE_COUNT, mutex-&gt;__data.__spins * 2 + 10);</span><br><span class="line">        do &#123;</span><br><span class="line">            if (cnt++ &gt;= max_cnt) &#123;</span><br><span class="line">                LLL_MUTEX_LOCK (mutex);</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            BUSY_WAIT_NOP;</span><br><span class="line">        &#125; while (LLL_MUTEX_TRYLOCK (mutex) != 0);</span><br><span class="line"></span><br><span class="line">        mutex-&gt;__data.__spins += (cnt - mutex-&gt;__data.__spins) / 8;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>这个实现已经和<a href="https://zhiqiang.org/coding/folly-micro-spinlock.html"><code>folly::MicroSpinLock</code></a>基本没有两样了，甚至细节处理得更好一些，比如它每次的最大尝试次数是动态的，会根据之前的尝试次数调整。</p><p>但我还是更喜欢用<code>folly::MicroSpinLock</code>，因为内存结构更简单（只占一个字节，而<code>pthread_mutex_t</code>需要 32 个字节！）， API 相比起 C 风格的 pthread 也更顺手一些。</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;锁C++实现</summary>
+    
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>负载均衡</title>
+    <link href="https://blog.oyyko.com/2022/04/18/chaoshu_load_balancer/"/>
+    <id>https://blog.oyyko.com/2022/04/18/chaoshu_load_balancer/</id>
+    <published>2022-04-17T16:00:00.000Z</published>
+    <updated>2022-04-18T02:54:01.934Z</updated>
+    
+    <content type="html"><![CDATA[<p>负载均衡 <span id="more"></span></p><p>负载均衡（Load Balancer）是指把用户访问的流量，通过「负载均衡器」，根据某种转发的策略，均匀的分发到后端多台服务器上，后端的服务器可以独立的响应和处理请求，从而实现分散负载的效果。负载均衡技术提高了系统的服务能力，增强了应用的可用性。</p><p>目前市面上最常见的负载均衡技术方案主要有三种：</p><ul><li><strong>基于DNS负载均衡</strong></li><li><strong>基于硬件负载均衡</strong></li><li><strong>基于软件负载均衡</strong></li></ul><p>DNS负载均衡可以实现在地域上的流量均衡，硬件负载均衡主要用于大型服务器集群中的负载需求，而软件负载均衡大多是基于机器层面的流量均衡。在实际场景中，这三种是可以组合在一起使用。</p><p>基于DNS来做负载均衡其实是一种最简单的实现方案，通过在DNS服务器上做一个简单配置即可。 其原理就是当用户访问域名的时候，会先向DNS服务器去解析域名对应的IP地址，这个时候我们可以让DNS服务器根据不同地理位置的用户返回不同的IP。比如南方的用户就返回我们在广州业务服务器的IP，北方的用户来访问的话，我就返回北京业务服务器所在的IP。</p><p>在这个模式下，用户就相当于实现了按照「就近原则」将请求分流了，既减轻了单个集群的负载压力，也提升了用户的访问速度。</p><p>使用DNS做负载均衡的方案，天然的优势就是配置简单，实现成本非常低，无需额外的开发和维护工作。 但是也有一个明显的缺点是：当配置修改后，生效不及时。这个是由于DNS的特性导致的，DNS一般会有多级缓存，所以当我们修改了DNS配置之后，由于缓存的原因，会导致IP变更不及时，从而影响负载均衡的效果。</p><p>基于硬件：<strong>F5 Network Big-IP</strong></p><p><strong>优点</strong>：能够直接通过智能交换机实现,处理能力更强，而且与系统无关，负载性能强更适用于一大堆设备、大访问量、简单应用。</p><p><strong>缺点</strong>：成本高</p><p><strong>基于软件负载均衡</strong>：软件负载均衡是指使用软件的方式来分发和均衡流量。软件负载均衡，分为7层协议 和 4层协议。 网络协议有七层，基于第四层传输层来做流量分发的方案称为4层负载均衡，例如 <strong>LVS</strong>，而基于第七层应用层来做流量分发的称为7层负载均衡，例如 <strong>Nginx</strong></p><p>算法：</p><ul><li><strong>轮询策略</strong></li><li><strong>负载度策略</strong></li><li><strong>响应策略</strong></li><li><strong>哈希策略</strong></li></ul><p>轮询有多种方式，有按顺序轮询的、有随机轮询的、还有按照权重来轮询的。前两种比较好理解，第三种按照权重来轮询，是指给每台后端服务设定一个权重值，比如性能高的服务器权重高一些，性能低的服务器给的权重低一些，这样设置的话，分配流量的时候，给权重高的更多流量，可以充分的发挥出后端机器的性能。</p><p>负载度策略是指当「负载均衡器」往后端转发流量的时候，会先去评估后端每台服务器的负载压力情况，对于压力比较大的后端服务器转发的请求就少一些，对于压力比较小的后端服务器可以多转发一些请求给它。</p><p>这种方式就充分的结合了后端服务器的运行状态，来动态的分配流量了，比轮询的方式更为科学一些。</p><p>但是这种方式也带来了一些弊端，因为需要动态的评估后端服务器的负载压力，那这个「负载均衡器」除了转发请求以外，还要做很多额外的工作，比如采集 连接数、请求数、CPU负载指标、IO负载指标等等，通过对这些指标进行计算和对比，判断出哪一台后端服务器的负载压力较大。</p><p>响应策略是指，当用户请求过来的时候，「负载均衡器」会优先将请求转发给当前时刻响应最快的后端服务器。 也就是说，不管后端服务器负载高不高，也不管配置如何，只要觉得这个服务器在当前时刻能最快的响应用户的请求，那么就优先把请求转发给它，这样的话，对于用户而言，体验也最好。</p><p>那「负载均衡器」是怎么知道哪一台后端服务在当前时刻响应能力最佳呢？ 这就需要「负载均衡器」不停的去统计每一台后端服务器对请求的处理速度了，比如一分钟统计一次，生成一个后端服务器处理速度的排行榜。然后「负载均衡器」根据这个排行榜去转发服务。</p><p>Hash策略也比较好理解，就是将请求中的某个信息进行hash计算，然后根据后端服务器台数取模，得到一个值，算出相同值的请求就被转发到同一台后端服务器中。常见的用法是对用户的IP或者ID进行这个策略，然后「负载均衡器」就能保证同一个IP来源或者同一个用户永远会被送到同一个后端服务器上了，一般用于处理缓存、会话等功能的时候特别好用。</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;负载均衡</summary>
+    
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>什么是noexcept?</title>
+    <link href="https://blog.oyyko.com/2022/04/18/chaoshu_noexpect/"/>
+    <id>https://blog.oyyko.com/2022/04/18/chaoshu_noexpect/</id>
+    <published>2022-04-17T16:00:00.000Z</published>
+    <updated>2022-04-18T02:56:56.022Z</updated>
+    
+    <content type="html"><![CDATA[<p>什么是noexcept? <span id="more"></span></p><h2 id="c-什么是noexcepteffective-modern-c">C++: 什么是noexcept?（Effective Modern C++）</h2><p>要理解这个关键字 先从C++98中的<code>throw</code>关键字讲起</p><p>throw 关键字除了可以用在函数体中抛出异常，还可以用在函数头和函数体之间，指明当前函数能够抛出的异常类型，这称为异常规范。</p><p>例如：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">char</span> c)</span> <span class="title">throw</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">double</span>)</span> </span>&#123;...&#125;</span><br></pre></td></tr></table></figure><p>这个的含义是函数f只能抛出<code>int</code>和<code>double</code>类型的异常</p><p>如果抛出其他类型的异常，try 将无法捕获，并直接调用<code>std::unexpected</code></p><p>而如果函数不会抛出任何异常，只需要加入空括号即可</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">no_ex</span><span class="params">(<span class="keyword">char</span> c)</span> <span class="title">throw</span><span class="params">()</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure><p>如果函数<code>no_ex</code>抛出任何异常，try 将无法捕获，并直接调用<code>std::unexpected</code></p><p><strong>C++ 规定，派生类虚函数的异常规范必须与基类虚函数的异常规范一样严格，或者更严格。只有这样，当通过基类指针（或者引用）调用派生类虚函数时，才能保证不违背基类成员函数的异常规范</strong>。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span> &#123;</span></span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">int</span> <span class="title">fun1</span><span class="params">(<span class="keyword">int</span>)</span> <span class="title">throw</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">int</span> <span class="title">fun2</span><span class="params">(<span class="keyword">int</span>)</span> <span class="title">throw</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> string <span class="title">fun3</span><span class="params">()</span> <span class="title">throw</span><span class="params">(<span class="keyword">int</span>, string)</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derived</span>:</span> <span class="keyword">public</span> Base &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">fun1</span><span class="params">(<span class="keyword">int</span>)</span> <span class="title">throw</span><span class="params">(<span class="keyword">int</span>)</span></span>;    <span class="comment">//错！异常规范不如 throw() 严格</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">fun2</span><span class="params">(<span class="keyword">int</span>)</span> <span class="title">throw</span><span class="params">(<span class="keyword">int</span>)</span></span>;    <span class="comment">//对！有相同的异常规范</span></span><br><span class="line">    <span class="function">string <span class="title">fun3</span><span class="params">()</span> <span class="title">throw</span><span class="params">(string)</span></span>; <span class="comment">//对！异常规范比 throw(int, string) 更严格</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>异常规范在函数声明和函数定义中必须同时指明，并且要严格保持一致，不能更加严格或者更加宽松。</p><p>但是异常规范在C++11中被删除。</p><p>它的优点是：让程序员看到函数的定义或声明后，立马就知道该函数会抛出什么类型的异常，这样程序员就可以使用 try-catch 来捕获了。如果没有异常规范，程序员必须阅读函数源码才能知道函数会抛出什么异常。</p><p>它的缺点是：</p><ul><li><p>嵌套的函数调用里面，A调用B，B引发了异常。则不一定体现在A的异常规范里面</p></li><li><p>异常规范的检查是在运行期 这会影响性能 而且不能保证所有异常都得到了处理</p></li><li><p>模版中无法使用</p></li><li><p>实际中应用较多的是：无异常和可能有异常、</p></li></ul><p>因此异常规范被删除，加入<code>noexpect</code>,用来表示函数一定不会抛出异常。</p><ol type="1"><li>noexcept 说明符要么出现在该函数的所有声明语句和定义语句，要么一次也不出现。</li><li>函数指针及该指针所指的函数必须具有一致的异常说明。</li><li>在 typedef 或类型别名中则不能出现 noexcept</li><li>在成员函数中，noexcept 说明符需要跟在 const 及引用限定符之后，而在 final、override 或虚函数的 =0 之前</li><li>如果一个虚函数承诺了它不会抛出异常，则后续派生的虚函数也必须做出同样的承诺；与之相反，如果基类的虚函数允许抛出异常，则派生类的虚函数既可以抛出异常，也可以不允许抛出异常</li></ol><p><strong>编译器不会检查带有 noexcept 说明符的函数是否有 throw</strong></p><p>这种情况下会直接调用<code>std::terminate</code>并且不会栈展开</p><p><strong>noexcept 除了可以用作说明符（Specifier），也可以用作运算符（Operator）</strong>。noexcept 运算符是一个一元运算符，它的返回值是一个 bool 类型的右值常量表达式，用于表示给定的表达式是否会抛出异常</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> <span class="keyword">noexcept</span> </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">g</span><span class="params">()</span> <span class="title">noexcept</span><span class="params">(<span class="keyword">noexcept</span>(f))</span> </span>&#123; <span class="comment">// g() 是否是 noexcept 取决于 f()</span></span><br><span class="line">    <span class="built_in">f</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><strong>析构函数默认都是 noexcept 的</strong>。C++ 11 标准规定，类的析构函数都是 noexcept 的，除非显示指定为 <code>noexcept(false)</code></p><p>在为某个异常进行栈展开的时候，会依次调用当前作用域下每个局部对象的析构函数，如果这个时候析构函数又抛出自己的未经处理的另一个异常，将会导致 <code>std::terminate</code>。所以析构函数应该从不抛出异常</p><p>与容器操作的关联：</p><p>一个 <code>std::vector&lt;T&gt;</code>，若要进行 <code>reserve</code> 操作，一个可能的情况是，需要重新分配内存，并把之前原有的数据拷贝（copy）过去，但如果 T 的移动构造函数是 noexcept 的，则可以移动（move）过去，大大地提高了效率。</p><p>为什么在移动构造函数是 noexcept 时才能使用？这是因为它执行的是 Strong Exception Guarantee，发生异常时需要还原，也就是说，你调用它之前是什么样，抛出异常后，你就得恢复成啥样。但对于移动构造函数发生异常，是很难恢复回去的，如果在恢复移动（move）的时候发生异常了呢？但复制构造函数就不同了，它发生异常直接调用它的析构函数就行了。</p><p>可以使用检测函数来检测析构函数的性质：</p><p><code>is_move_constructible</code>，用于检测类型是否可以被移动构造，如果对应类的移动构造函数被声明为 “delete”，那么这个函数的实例值便为 “false”。</p><p><code>is_trivially_move_constructible</code>，它用于检测类型是否具有普通的移动构造函数，为了满足“普通”这一特点，我们需要保证这个类型符合多项约束条件，比如，类型没有虚函数，没有虚基类，没有任何不稳定的非静态成员，等等。</p><p><code>is_nothrow_move_constructible</code>，同它的名称一样，它的功能是用来检测类是否具有不会抛出异常的移动构造函数。当条件成立时，这个函数实例所对应的值便为 “true”。</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;什么是noexcept?</summary>
+    
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>根据什么来决定你的项目用sql还是nosql database?</title>
+    <link href="https://blog.oyyko.com/2022/04/18/chaoshu_nosql/"/>
+    <id>https://blog.oyyko.com/2022/04/18/chaoshu_nosql/</id>
+    <published>2022-04-17T16:00:00.000Z</published>
+    <updated>2022-04-18T02:56:49.012Z</updated>
+    
+    <content type="html"><![CDATA[<p>根据什么来决定你的项目用sql还是nosql database? <span id="more"></span></p><p>根据什么来决定你的项目用sql还是nosql database?</p><p>NoSQL具有灵活的数据模型，可以处理非结构化/半结构化的大数据</p><p>NoSQL很容易实现可伸缩性（向上扩展与水平扩展）</p><p>动态模式</p><p>关系型数据库需要在添加数据前先定义好模式。比如说，你需要存储客户的电话号码、姓名、地址、城市与州等信息，SQL数据库需要提前知晓你要存的是什么。这对于敏捷开发模式来说是场灾难，因为每次完成新特性时，数据库的模式通常都需要改变。</p><p>自动分片</p><p>NoSQL数据库通常都支持自动分片，这意味着他们本质上就会自动在多台服务器上分发数据，应用甚至都不知道这些事情。数据与查询负载会自动在多台服务器上做到平衡，当某台服务器当机时，它能快速且透明地被替换掉。</p><p>使用场景：</p><p>数据库表schema经常变化</p><p>数据库表字段是复杂数据类型</p><p>高并发数据库请求</p><p>海量数据的分布式存储</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;根据什么来决定你的项目用sql还是nosql database?</summary>
+    
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>网站用户密码该如何保存</title>
+    <link href="https://blog.oyyko.com/2022/04/18/chaoshu_password/"/>
+    <id>https://blog.oyyko.com/2022/04/18/chaoshu_password/</id>
+    <published>2022-04-17T16:00:00.000Z</published>
+    <updated>2022-04-18T02:56:38.582Z</updated>
+    
+    <content type="html"><![CDATA[<p>网站用户密码该如何保存 <span id="more"></span></p><h3 id="网站用户密码该如何保存加密方式等等">网站用户密码该如何保存（加密方式等等）</h3><p>早期的网站大多以<strong>明文</strong>存储密码，所谓明文就是，就是存储密码本身。用户登录时，服务器用数据库中的密码和用户输入的密码进行比对，完全相同则登陆成功。这是最简单的一种存储方式，其优点是：实现简单，且用户可以“找回密码”。但致命的缺点是，<strong>一旦密码数据库泄露，几乎无可挽回</strong>。当然，网站所有者可以看到密码。</p><p>因此使用Hash的方式来保存密码。</p><p>用户输入一个密码后，则计算它的Hash值，通过比较二者的Hash值是否相同，间接的确定密码是否与真正的密码匹配。有一定可能两个不同的字串的Hash值相同，但这一事件的概率非常低，可以忽略不计。</p><p>因此：当数据库泄露的时候，黑客也不能得到密码的原文。</p><p>但黑客可以对于常见的密码进行记忆，之后反过来找。</p><p>解决方法：hash两次</p><p>加salt值之后再进行hash salt为随机生成的</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;网站用户密码该如何保存</summary>
+    
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>短链接</title>
+    <link href="https://blog.oyyko.com/2022/04/18/chaoshu_short_link/"/>
+    <id>https://blog.oyyko.com/2022/04/18/chaoshu_short_link/</id>
+    <published>2022-04-17T16:00:00.000Z</published>
+    <updated>2022-04-18T02:56:27.439Z</updated>
+    
+    <content type="html"><![CDATA[<p>短链接 <span id="more"></span></p><p>使用短链接 即用一个短的链接指向长的链接 从而满足字数的要求</p><p>定义一个URL映射算法，将长的URL映射到短的URL，使用数据库或者redis缓存存储映射关系，实现映射算法。其中关键部分在于映射算法.</p><p>hash算法存在hash碰撞的问题</p><p>现在用的比较多的是发号器+62进制编码</p><p>301还是302重定向</p><p>301是永久重定向，302是临时重定向。短地址一经生成就不会变化，所以用301是符合http语义的。但是如果用了301， Google，百度等搜索引擎，搜索的时候会直接展示真实地址，那我们就无法统计到短地址被点击的次数了，也无法收集用户的Cookie, User Agent 等信息，这些信息可以用来做很多有意思的大数据分析，也是短网址服务商的主要盈利来源。所以，正确答案是302重定向。</p><p><em>如何保证发号器的大并发高可用</em></p><p>实现两个发号器，一个发单号，一个发双号，这样就变单点为多点了？依次类推，我们可以实现1000个逻辑发号器，分别发尾号为0到999的号。每发一个号，每个发号器加1000，而不是加1。</p><p>如何实现同一个长地址多次转换，出来还是同一个短地址</p><p>用key-value存储，保存“最近”生成的长对短的一个对应关系。注意是“最近”，也就是说，我并不保存全量的长对短的关系，而只保存最近的。比如采用一小时过期的机制来实现LRU淘汰。</p><p>这样的话，长转短的流程变成这样： 1 在这个“最近”表中查看一下，看长地址有没有对应的短地址 1.1 有就直接返回，并且将这个key-value对的过期时间再延长成一小时 1.2 如果没有，就通过发号器生成一个短地址，并且将这个“最近”表中，过期时间为1小时</p><p>所以当一个地址被频繁使用，那么它会一直在这个key-value表中，总能返回当初生成那个短地址，不会出现重复的问题。如果它使用并不频繁，那么长对短的key会过期，LRU机制自动就会淘汰掉它。</p><p>当然，这不能保证100%的同一个长地址一定能转出同一个短地址，比如你拿一个生僻的url，每间隔1小时来转一次，你会得到不同的短地址。但是这不会影响太多性能</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;短链接</summary>
+    
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>move 和 forward</title>
+    <link href="https://blog.oyyko.com/2022/04/18/chaoshu_std_move/"/>
+    <id>https://blog.oyyko.com/2022/04/18/chaoshu_std_move/</id>
+    <published>2022-04-17T16:00:00.000Z</published>
+    <updated>2022-04-18T02:58:20.207Z</updated>
+    
+    <content type="html"><![CDATA[<p>std::move 和 std::forward <span id="more"></span></p><h2 id="c-讲一讲-stdmove-和-stdforward-effective-modern-c">C++: 讲一讲 std::move 和 std::forward （Effective Modern C++）</h2><h3 id="前置知识">前置知识</h3><p>C++中每个表达式都有两个属性：类型和值类别。</p><p><code>int</code>,<code>int&amp;</code>,<code>int*</code>,<code>double</code>等都是类型</p><p>而值类别分为：lvalue,xvlaue,prvalue,glvalue,rvalue</p><ul><li>lvalue是指：拥有身份且不可被移动的表达式。</li><li>xvalue是指：拥有身份且可被移动的表达式。</li><li>prvalue是指：不拥有身份且可被移动的表达式。</li><li>glvalue是指：拥有身份的表达式，lvalue和xvalue都是glvalue。</li><li>rvalue是指：可被移动的表达式。prvalue和xvalue都是rvalue。</li></ul><p>拥有身份的含义是：可以确定表达式与另一个表达式是否指代同一个实体。例如两个右值1和1，你无法区分它们是一个1还是说只是值相等。但是<code>int a=1,b=1;</code>里面的a和b虽然值都是1，但是a和b不是一个实体。一般来讲通过比较两个左值的内存地址来区分它们是否指代同一个实体。</p><p>glvalue可以自动转换为prvalue，例如<code>int x=a;</code> a会自动转换为prvalue</p><p>lvalue具有以下特征：</p><ul><li>可以通过取址运算符获取其地址</li><li>可以用来初始化左值引用</li></ul><p>prvalue具有以下特征：</p><ul><li>prvalue不会是多态的</li><li>prvalue不会是不完全类型</li><li>prvalue不会是抽象类型或数组</li></ul><p>xvalue也叫将亡值，它一般接近了生命周期的末尾，与移动语义有关。</p><p>C++11之前，可以用<code>const type&amp;</code>的方式来引用右值例如<code>const int&amp; x=3;</code></p><p>C++11增加了右值引用。右值引用延长了临时值的生命周期！</p><p>例如：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(X&amp; x)</span> </span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;lvalue reference version&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(X&amp;&amp; x)</span> </span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;rvalue reference version&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">X <span class="title">returnX</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">X</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    X x;</span><br><span class="line">    <span class="built_in">func</span>(x); <span class="comment">// lvalue</span></span><br><span class="line">    <span class="built_in">func</span>(<span class="built_in">returnX</span>()); <span class="comment">// rvalue</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ul><li>左值引用：可以绑定到左值（非const），也可以绑定到右值（const）</li><li>右值引用：只能绑定到右值</li></ul><h3 id="stdmove">std::move</h3><p>move并不执行任何移动操作，也不会生成任何一byte的可执行代码。它所做的仅仅是一个强制类型转换。把参数强制转换为匿名右值引用。（注意：具名右值引用是左值，而匿名右值引用是右值。）</p><p>例如：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">string a = <span class="string">&quot;hello&quot;</span>;</span><br><span class="line">string b = <span class="built_in">move</span>(a);</span><br><span class="line">cout &lt;&lt; b.<span class="built_in">size</span>() &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; a.<span class="built_in">size</span>();<span class="comment">// 5 0</span></span><br></pre></td></tr></table></figure><p>这里我们把a用move转换为右值，以此来触发string的移动构造函数，从而a的size变为0，它的值给了b。且避免了深拷贝。（应该是直接把指向字符串的指针给了b，并不是复制了5个char）</p><h2 id="stdforward">std::forward</h2><p>与move类似，forward也执行一个转换操作，但是是有条件的转换。</p><p>std::forward会根据传递给func函数实参（注意，不是形参）的左/右值类型进行转发。当传给func函数左值实参时，forward返回左值引用。而当传入func的实参为右值时，forward返回匿名右值引用。</p><p>用途：配合万能引用实现完美转发。用于给函数提供右值类型的参数，使得其重载右值版本。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(A &amp;x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;L\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(A &amp;&amp;x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;R\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_f</span><span class="params">(T &amp;&amp;x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">f</span>(forward&lt;T&gt;(x));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A a;</span><br><span class="line">    A &amp;x = a;</span><br><span class="line">    <span class="built_in">do_f</span>(A&#123;&#125;); <span class="comment">// R</span></span><br><span class="line">    <span class="built_in">do_f</span>(a);   <span class="comment">// L</span></span><br><span class="line">    <span class="built_in">do_f</span>(x);   <span class="comment">// L</span></span><br><span class="line">    A &amp;&amp;y = A&#123;&#125;;</span><br><span class="line">    <span class="built_in">f</span>(y);             <span class="comment">// R</span></span><br><span class="line">    <span class="built_in">f</span>(forward&lt;A&gt;(y)); <span class="comment">// L</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>注意：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">A &amp;&amp;y = A&#123;&#125;;</span><br><span class="line"><span class="built_in">f</span>(y);             <span class="comment">// L</span></span><br><span class="line"><span class="built_in">f</span>(forward&lt;A&gt;(y)); <span class="comment">// R</span></span><br></pre></td></tr></table></figure><p>这个例子说明了forward的重要用途。由于具名右值引用是左值。因此需要forward来调用右值版本的重载。</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;std::move 和 std::forward</summary>
+    
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>讲一讲 congestion control 的方法</title>
+    <link href="https://blog.oyyko.com/2022/04/18/chaoshu_tcp_control/"/>
+    <id>https://blog.oyyko.com/2022/04/18/chaoshu_tcp_control/</id>
+    <published>2022-04-17T16:00:00.000Z</published>
+    <updated>2022-04-18T02:56:11.943Z</updated>
+    
+    <content type="html"><![CDATA[<p>讲一讲 congestion control 的方法 <span id="more"></span></p><h2 id="讲一讲-congestion-control-的方法">讲一讲 congestion control 的方法</h2><p>流量控制：用来解决发送方和接收方的速度不匹配的问题。</p><p>拥塞控制：防止过多数据注入到网络中，从而路由器或者链路过载</p><p>方法：</p><p>1.慢开始</p><p>2.拥塞避免</p><p>3.快重传</p><p>4.快恢复</p><p>TCP的拥塞控制采用的是窗口机制，通过调节窗口的大小实现对数据发送速率的调整。</p><p>TCP的发送端维持一个称为拥塞窗口cwnd的变量，单位为字节。 为了防止拥塞窗口cwnd增长过大引起网络拥塞，还需要设置一个慢开始门限ssthresh状态变量 1.当cwnd &lt; ssthresh时，使用上述的慢开始算法 2.当cwnd &gt; ssthresh时， 停止使用慢开始算法而改用拥塞避免算法 3.当cwnd = ssthresh时 ， 即可以使用慢开始算法，也可以使用拥塞避免算法。 什么是RTT 1、一个传输轮次所经历的时间其实就是往返时间RTT（RTT并非恒定的数值） 例如，拥塞窗口cwnd的大小是4个报文段，那么这时的往返时间RTT就是发送方连续发送4个报文段，并收到这4个报文段的确认，总共经历的时间。 2、使用“传输轮次”是更加强调：把拥塞窗口所允许发生的报文段都连续发送出去，并收到了对已发送的最后一个字节的确认 3、在TCP的实际运行中，发送方只要收到一个对新报文段的确认，其拥塞窗口cwnd就立即加1，并可以立即发送新的报文段，而不需要等这个轮次中所有的确认都收到后再发送新的报文段。</p><p><strong>2、慢开始流程：</strong></p><ul><li>1、 在主机刚刚开始发送报文段时可先设置拥塞窗口 cwnd = 1，即设置为一个最大报文段 MSS 的数值。</li><li>2、 在每收到一个对新的报文段的确认后，每经过一个传输轮次，拥塞窗口cwnd就加倍，即增加 MSS 的数值</li></ul><p>拥塞避免算法： 当拥塞窗口的值增加到ssthresh时，就要减缓拥塞窗口的增长速度。</p><p>1、具体的做法是每经过一个RTT，拥塞窗口cwnd的值加1（单位为MSS），这样就可以使cwnd按线性规律缓慢增长。 2、只要发送方判断网络出现拥塞（其根据就是没有按时收到确认），就要把慢开始门限 ssthresh 设置为出现拥塞时的发送方窗口值的一半（但不能小于2）。 3、然后把拥塞窗口 cwnd 重新设置为 1，执行慢开始算法。</p><p>快重传算法规定，发送方只要一收到3个重复确认，就知道接受方确实没有收到报文段M3，因而应当立即进行重传（即“快重传”），这样就不会出现超时，发送方也不就会认为出现了网络拥塞。</p><p>当发送端连续收到三个重复确认时，就将慢开始门限ssthresh减半，以预防网络拥塞的发生，并且将拥塞窗口cwnd的值置为减半后的ssthresh，然后开始执行拥塞避免算法，使得cwnd缓慢地加性增大。</p><p>快恢复的两个特点</p><p>1、当发送方连续收到三个重复确认时，就执行“乘法减小”算法，把慢开始门限减半，这是为了预防网络发生拥塞。 2、由于发送方现在认为网络很可能没有发生拥塞，因此现在不执行慢开始算法，而是把cwnd值设置为慢开始门限减半后的值，然后开始执行拥塞避免算法，是拥塞窗口的线性增大。</p><p><strong>快恢复和慢开始的区别：</strong></p><p>慢开始算法只是在TCP建立时才使用，快恢复是在遇到网络拥塞接收不到数据时触发，常常伴随着快重传算法。</p><h2 id="拥塞控制和流量控制的区别">拥塞控制和流量控制的区别</h2><p>1、拥塞控制是防止过多的数据注入到网络中，可以使网络中的路由器或链路不致过载，是一个全局性的过程。 2、流量控制是点对点通信量的控制，是一个端到端的问题，主要就是抑制发送端发送数据的速率，以便接收端来得及接收</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;讲一讲 congestion control 的方法</summary>
+    
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+    <category term="面试" scheme="https://blog.oyyko.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+</feed>
